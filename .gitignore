@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Flask
+instance/
+.webassets-cache/
+
+# Migrations and local databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Uploaded/imported/exported business files
+data/imports/*
+!data/imports/.gitkeep
+data/exports/*
+!data/exports/.gitkeep
+uploads/
+
+# Generated templates and samples can be tracked deliberately
+*.tmp
+*.bak
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/

@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: auditshields_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: auditshields
+      POSTGRES_USER: auditshields
+      POSTGRES_PASSWORD: auditshields_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - auditshields_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auditshields -d auditshields"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: auditshields_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@auditshields.local
+      PGADMIN_DEFAULT_PASSWORD: auditshields_admin
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - auditshields_pgadmin_data:/var/lib/pgadmin
+    profiles:
+      - tools
+
+volumes:
+  auditshields_postgres_data:
+  auditshields_pgadmin_data:
