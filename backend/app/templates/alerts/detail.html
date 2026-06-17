@@ -23,17 +23,17 @@
         <div class="card-body">
           <dl class="row mb-0">
             <dt class="col-sm-4 text-secondary">Modulo</dt>
-            <dd class="col-sm-8">{{ alert.module }}</dd>
+            <dd class="col-sm-8">{{ module_labels.get(alert.module, alert.module) }}</dd>
             <dt class="col-sm-4 text-secondary">Entidad</dt>
-            <dd class="col-sm-8">{{ alert.entity_type }} #{{ alert.entity_id or '-' }}</dd>
+            <dd class="col-sm-8">{{ entity_type_labels.get(alert.entity_type, alert.entity_type) }} #{{ alert.entity_id or '-' }}</dd>
             <dt class="col-sm-4 text-secondary">Riesgo</dt>
-            <dd class="col-sm-8">{{ alert.risk_level }}</dd>
+            <dd class="col-sm-8">{{ risk_level_labels.get(alert.risk_level, alert.risk_level) }}</dd>
             <dt class="col-sm-4 text-secondary">Score</dt>
             <dd class="col-sm-8">{{ alert.risk_score }}</dd>
             <dt class="col-sm-4 text-secondary">Monto</dt>
             <dd class="col-sm-8">{{ alert.amount_at_risk or '-' }}</dd>
             <dt class="col-sm-4 text-secondary">Estado</dt>
-            <dd class="col-sm-8">{{ alert.status }}</dd>
+            <dd class="col-sm-8">{{ alert_status_labels.get(alert.status, alert.status) }}</dd>
             <dt class="col-sm-4 text-secondary">Fingerprint</dt>
             <dd class="col-sm-8 small">{{ alert.fingerprint }}</dd>
           </dl>

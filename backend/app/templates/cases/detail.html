@@ -21,9 +21,9 @@
         <div class="card-body">
           <dl class="row mb-0">
             <dt class="col-sm-4 text-secondary">Estado</dt>
-            <dd class="col-sm-8">{{ audit_case.status }}</dd>
+            <dd class="col-sm-8">{{ case_status_labels.get(audit_case.status, audit_case.status) }}</dd>
             <dt class="col-sm-4 text-secondary">Riesgo</dt>
-            <dd class="col-sm-8">{{ audit_case.risk_level }}</dd>
+            <dd class="col-sm-8">{{ risk_level_labels.get(audit_case.risk_level, audit_case.risk_level) }}</dd>
             <dt class="col-sm-4 text-secondary">Score</dt>
             <dd class="col-sm-8">{{ audit_case.risk_score }}</dd>
             <dt class="col-sm-4 text-secondary">Responsable</dt>
@@ -45,7 +45,7 @@
             <label class="form-label" for="status">Estado</label>
             <select class="form-select mb-3" id="status" name="status">
               {% for status in statuses %}
-                <option value="{{ status }}" {% if audit_case.status == status %}selected{% endif %}>{{ status }}</option>
+                <option value="{{ status }}" {% if audit_case.status == status %}selected{% endif %}>{{ case_status_labels.get(status, status) }}</option>
               {% endfor %}
             </select>
             <label class="form-label" for="resolution_summary">Resumen de resolucion</label>
@@ -131,9 +131,9 @@
               {% for item in history %}
                 <tr>
                   <td>{{ item.created_at }}</td>
-                  <td>{{ item.action }}</td>
+                  <td>{{ case_action_labels.get(item.action, item.action) }}</td>
                   <td>{{ item.user.name if item.user else '-' }}</td>
-                  <td>{{ item.from_status or '-' }} -> {{ item.to_status or '-' }}</td>
+                  <td>{{ case_status_labels.get(item.from_status, item.from_status or '-') }} -> {{ case_status_labels.get(item.to_status, item.to_status or '-') }}</td>
                 </tr>
               {% else %}
                 <tr>

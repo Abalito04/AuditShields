@@ -6,6 +6,7 @@ from flask_login import current_user, login_required
 from app.extensions import db
 from app.models import Case, CaseComment, CaseHistory, User
 from app.services.audit_log_service import model_snapshot, record_audit_log
+from app.utils.labels import CASE_ACTION_LABELS, CASE_STATUS_LABELS, RISK_LEVEL_LABELS
 
 
 cases_bp = Blueprint("cases", __name__, url_prefix="/cases")
@@ -52,6 +53,8 @@ def index():
         filters={"risk_level": risk_level, "status": status},
         risk_levels=_distinct_values(Case.risk_level),
         statuses=CASE_STATUSES,
+        risk_level_labels=RISK_LEVEL_LABELS,
+        case_status_labels=CASE_STATUS_LABELS,
     )
 
 
@@ -69,6 +72,9 @@ def detail(item_id: int):
         users=users,
         comments=comments,
         history=history,
+        risk_level_labels=RISK_LEVEL_LABELS,
+        case_status_labels=CASE_STATUS_LABELS,
+        case_action_labels=CASE_ACTION_LABELS,
     )
 
 

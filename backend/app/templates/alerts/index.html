@@ -22,7 +22,7 @@
           <select class="form-select" id="module" name="module">
             <option value="">Todos</option>
             {% for value in modules %}
-              <option value="{{ value }}" {% if filters.module == value %}selected{% endif %}>{{ value }}</option>
+              <option value="{{ value }}" {% if filters.module == value %}selected{% endif %}>{{ module_labels.get(value, value) }}</option>
             {% endfor %}
           </select>
         </div>
@@ -31,7 +31,7 @@
           <select class="form-select" id="risk_level" name="risk_level">
             <option value="">Todos</option>
             {% for value in risk_levels %}
-              <option value="{{ value }}" {% if filters.risk_level == value %}selected{% endif %}>{{ value }}</option>
+              <option value="{{ value }}" {% if filters.risk_level == value %}selected{% endif %}>{{ risk_level_labels.get(value, value) }}</option>
             {% endfor %}
           </select>
         </div>
@@ -40,7 +40,7 @@
           <select class="form-select" id="status" name="status">
             <option value="">Todos</option>
             {% for value in statuses %}
-              <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ value }}</option>
+              <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ alert_status_labels.get(value, value) }}</option>
             {% endfor %}
           </select>
         </div>
@@ -71,11 +71,11 @@
             <tr>
               <td>{{ alert.rule.code }}</td>
               <td>{{ alert.title }}</td>
-              <td>{{ alert.module }}</td>
-              <td>{{ alert.risk_level }}</td>
+              <td>{{ module_labels.get(alert.module, alert.module) }}</td>
+              <td>{{ risk_level_labels.get(alert.risk_level, alert.risk_level) }}</td>
               <td>{{ alert.risk_score }}</td>
               <td>{{ alert.amount_at_risk or '-' }}</td>
-              <td>{{ alert.status }}</td>
+              <td>{{ alert_status_labels.get(alert.status, alert.status) }}</td>
               <td class="text-end">
                 <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('alerts.detail', item_id=alert.id) }}">Ver</a>
                 {% if alert.case %}

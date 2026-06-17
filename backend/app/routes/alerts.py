@@ -4,6 +4,12 @@ from flask import Blueprint, render_template, request
 from flask_login import login_required
 
 from app.models import Alert
+from app.utils.labels import (
+    ALERT_STATUS_LABELS,
+    ENTITY_TYPE_LABELS,
+    MODULE_LABELS,
+    RISK_LEVEL_LABELS,
+)
 
 
 alerts_bp = Blueprint("alerts", __name__, url_prefix="/alerts")
@@ -34,6 +40,9 @@ def index():
         modules=_distinct_values(Alert.module),
         risk_levels=_distinct_values(Alert.risk_level),
         statuses=_distinct_values(Alert.status),
+        module_labels=MODULE_LABELS,
+        risk_level_labels=RISK_LEVEL_LABELS,
+        alert_status_labels=ALERT_STATUS_LABELS,
     )
 
 
@@ -42,7 +51,15 @@ def index():
 def detail(item_id: int):
     alert = Alert.query.get_or_404(item_id)
     evidence_json = json.dumps(alert.evidence_json or {}, indent=2, ensure_ascii=False)
-    return render_template("alerts/detail.html", alert=alert, evidence_json=evidence_json)
+    return render_template(
+        "alerts/detail.html",
+        alert=alert,
+        evidence_json=evidence_json,
+        module_labels=MODULE_LABELS,
+        risk_level_labels=RISK_LEVEL_LABELS,
+        alert_status_labels=ALERT_STATUS_LABELS,
+        entity_type_labels=ENTITY_TYPE_LABELS,
+    )
 
 
 def _distinct_values(column):

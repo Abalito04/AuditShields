@@ -17,7 +17,7 @@
           <select class="form-select" id="risk_level" name="risk_level">
             <option value="">Todos</option>
             {% for value in risk_levels %}
-              <option value="{{ value }}" {% if filters.risk_level == value %}selected{% endif %}>{{ value }}</option>
+              <option value="{{ value }}" {% if filters.risk_level == value %}selected{% endif %}>{{ risk_level_labels.get(value, value) }}</option>
             {% endfor %}
           </select>
         </div>
@@ -26,7 +26,7 @@
           <select class="form-select" id="status" name="status">
             <option value="">Todos</option>
             {% for value in statuses %}
-              <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ value }}</option>
+              <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ case_status_labels.get(value, value) }}</option>
             {% endfor %}
           </select>
         </div>
@@ -57,9 +57,9 @@
             <tr>
               <td>{{ audit_case.case_number }}</td>
               <td>{{ audit_case.title }}</td>
-              <td>{{ audit_case.risk_level }}</td>
+              <td>{{ risk_level_labels.get(audit_case.risk_level, audit_case.risk_level) }}</td>
               <td>{{ audit_case.risk_score }}</td>
-              <td>{{ audit_case.status }}</td>
+              <td>{{ case_status_labels.get(audit_case.status, audit_case.status) }}</td>
               <td>{{ audit_case.assigned_to.name if audit_case.assigned_to else '-' }}</td>
               <td>{{ audit_case.created_at }}</td>
               <td class="text-end">
