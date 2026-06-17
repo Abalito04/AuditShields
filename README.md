@@ -172,7 +172,29 @@ CSV samples for testing imports are available in `data/samples`. Import them fro
 
 From the dashboard, use `Ejecutar auditoria` to run the fraud engine. The base engine creates the default rule catalog, executes active rule functions, persists new alerts, ignores duplicated fingerprints and creates one audit case per alert.
 
-The concrete rule detections are implemented progressively in the next phases. Until purchase and inventory rules are filled in, the engine can run successfully but may return zero alerts.
+Implemented purchase and supplier rules:
+
+- R001 duplicate payments.
+- R002 duplicate invoices.
+- R003 suppliers sharing bank account.
+- R004 new supplier with high payments.
+- R005 payment or invoice without purchase order traceability.
+- R006 split purchases below approval limit.
+- R007 approver equal to requester.
+- R008 excessive supplier concentration.
+- R009 payment outside business hours.
+- R010 incomplete supplier data.
+
+Implemented inventory rules:
+
+- S001 repeated manual adjustments.
+- S002 negative stock.
+- S003 inventory difference above threshold.
+- S004 movement outside business hours.
+- S005 excessive shrinkage.
+- S006 unreconciled transfer.
+- S007 operator with too many adjustments.
+- S008 active product without recent movement.
 
 ## Railway Deploy
 
