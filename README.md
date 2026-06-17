@@ -196,6 +196,15 @@ Implemented inventory rules:
 - S007 operator with too many adjustments.
 - S008 active product without recent movement.
 
+Audit results are visible from:
+
+```text
+/alerts
+/cases
+```
+
+Each alert has an explanatory detail page with rule, score, risk level and evidence JSON. Each alert creates an audit case that can be assigned, commented, moved through statuses and reviewed through its history.
+
 ## Railway Deploy
 
 Recommended Railway service root directory:

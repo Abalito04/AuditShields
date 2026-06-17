@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Casos | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Auditoria</p>
+    <h1 class="h3 mb-2">Casos de auditoria</h1>
+    <p class="text-secondary mb-0">Casos creados desde alertas para revision, normalizacion y cierre.</p>
+  </div>
+
+  <form class="card border-0 shadow-sm mb-4" method="get">
+    <div class="card-body">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label" for="risk_level">Riesgo</label>
+          <select class="form-select" id="risk_level" name="risk_level">
+            <option value="">Todos</option>
+            {% for value in risk_levels %}
+              <option value="{{ value }}" {% if filters.risk_level == value %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label" for="status">Estado</label>
+          <select class="form-select" id="status" name="status">
+            <option value="">Todos</option>
+            {% for value in statuses %}
+              <option value="{{ value }}" {% if filters.status == value %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-outline-primary w-100" type="submit">Filtrar</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <section class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Caso</th>
+            <th>Titulo</th>
+            <th>Riesgo</th>
+            <th>Score</th>
+            <th>Estado</th>
+            <th>Responsable</th>
+            <th>Fecha</th>
+            <th class="text-end">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for audit_case in pagination.items %}
+            <tr>
+              <td>{{ audit_case.case_number }}</td>
+              <td>{{ audit_case.title }}</td>
+              <td>{{ audit_case.risk_level }}</td>
+              <td>{{ audit_case.risk_score }}</td>
+              <td>{{ audit_case.status }}</td>
+              <td>{{ audit_case.assigned_to.name if audit_case.assigned_to else '-' }}</td>
+              <td>{{ audit_case.created_at }}</td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-primary" href="{{ url_for('cases.detail', item_id=audit_case.id) }}">Revisar</a>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td class="text-center text-secondary py-4" colspan="8">
+                Todavia no hay casos.
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}

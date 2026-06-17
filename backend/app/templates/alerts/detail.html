@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Alerta {{ alert.id }} | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">{{ alert.rule.code }} - {{ alert.rule.name }}</p>
+      <h1 class="h3 mb-2">{{ alert.title }}</h1>
+      <p class="text-secondary mb-0">{{ alert.description }}</p>
+    </div>
+    <div class="d-flex gap-2">
+      {% if alert.case %}
+        <a class="btn btn-primary" href="{{ url_for('cases.detail', item_id=alert.case.id) }}">Ver caso</a>
+      {% endif %}
+      <a class="btn btn-outline-secondary" href="{{ url_for('alerts.index') }}">Volver</a>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <section class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <dl class="row mb-0">
+            <dt class="col-sm-4 text-secondary">Modulo</dt>
+            <dd class="col-sm-8">{{ alert.module }}</dd>
+            <dt class="col-sm-4 text-secondary">Entidad</dt>
+            <dd class="col-sm-8">{{ alert.entity_type }} #{{ alert.entity_id or '-' }}</dd>
+            <dt class="col-sm-4 text-secondary">Riesgo</dt>
+            <dd class="col-sm-8">{{ alert.risk_level }}</dd>
+            <dt class="col-sm-4 text-secondary">Score</dt>
+            <dd class="col-sm-8">{{ alert.risk_score }}</dd>
+            <dt class="col-sm-4 text-secondary">Monto</dt>
+            <dd class="col-sm-8">{{ alert.amount_at_risk or '-' }}</dd>
+            <dt class="col-sm-4 text-secondary">Estado</dt>
+            <dd class="col-sm-8">{{ alert.status }}</dd>
+            <dt class="col-sm-4 text-secondary">Fingerprint</dt>
+            <dd class="col-sm-8 small">{{ alert.fingerprint }}</dd>
+          </dl>
+        </div>
+      </section>
+    </div>
+
+    <div class="col-lg-7">
+      <section class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white">
+          <h2 class="h6 mb-0">Evidencia</h2>
+        </div>
+        <div class="card-body">
+          <pre class="bg-light border rounded p-3 mb-0 small">{{ evidence_json }}</pre>
+        </div>
+      </section>
+    </div>
+  </div>
+{% endblock %}

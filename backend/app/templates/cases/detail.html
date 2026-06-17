@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}{{ audit_case.case_number }} | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">{{ audit_case.case_number }}</p>
+      <h1 class="h3 mb-2">{{ audit_case.title }}</h1>
+      <p class="text-secondary mb-0">{{ audit_case.description }}</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a class="btn btn-outline-primary" href="{{ url_for('alerts.detail', item_id=audit_case.alert.id) }}">Ver alerta</a>
+      <a class="btn btn-outline-secondary" href="{{ url_for('cases.index') }}">Volver</a>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-5">
+      <section class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <dl class="row mb-0">
+            <dt class="col-sm-4 text-secondary">Estado</dt>
+            <dd class="col-sm-8">{{ audit_case.status }}</dd>
+            <dt class="col-sm-4 text-secondary">Riesgo</dt>
+            <dd class="col-sm-8">{{ audit_case.risk_level }}</dd>
+            <dt class="col-sm-4 text-secondary">Score</dt>
+            <dd class="col-sm-8">{{ audit_case.risk_score }}</dd>
+            <dt class="col-sm-4 text-secondary">Responsable</dt>
+            <dd class="col-sm-8">{{ audit_case.assigned_to.name if audit_case.assigned_to else '-' }}</dd>
+            <dt class="col-sm-4 text-secondary">Normalizado</dt>
+            <dd class="col-sm-8">{{ audit_case.normalized_at or '-' }}</dd>
+            <dt class="col-sm-4 text-secondary">Cerrado</dt>
+            <dd class="col-sm-8">{{ audit_case.closed_at or '-' }}</dd>
+          </dl>
+        </div>
+      </section>
+
+      <section class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h2 class="h6 mb-0">Cambiar estado</h2>
+        </div>
+        <form method="post" action="{{ url_for('cases.update_status', item_id=audit_case.id) }}">
+          <div class="card-body">
+            <label class="form-label" for="status">Estado</label>
+            <select class="form-select mb-3" id="status" name="status">
+              {% for status in statuses %}
+                <option value="{{ status }}" {% if audit_case.status == status %}selected{% endif %}>{{ status }}</option>
+              {% endfor %}
+            </select>
+            <label class="form-label" for="resolution_summary">Resumen de resolucion</label>
+            <textarea class="form-control" id="resolution_summary" name="resolution_summary" rows="4">{{ audit_case.resolution_summary or '' }}</textarea>
+          </div>
+          <div class="card-footer bg-white">
+            <button class="btn btn-primary" type="submit">Guardar estado</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card border-0 shadow-sm">
+        <div class="card-header bg-white">
+          <h2 class="h6 mb-0">Asignar responsable</h2>
+        </div>
+        <form method="post" action="{{ url_for('cases.assign', item_id=audit_case.id) }}">
+          <div class="card-body">
+            <select class="form-select" name="assigned_to_user_id">
+              <option value="">Sin asignar</option>
+              {% for user in users %}
+                <option value="{{ user.id }}" {% if audit_case.assigned_to_user_id == user.id %}selected{% endif %}>{{ user.name }} - {{ user.role }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="card-footer bg-white">
+            <button class="btn btn-outline-primary" type="submit">Asignar</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div class="col-lg-7">
+      <section class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h2 class="h6 mb-0">Alerta original</h2>
+        </div>
+        <div class="card-body">
+          <p class="mb-2"><strong>{{ audit_case.alert.rule.code }}</strong> - {{ audit_case.alert.rule.name }}</p>
+          <p class="text-secondary mb-0">{{ audit_case.alert.description }}</p>
+        </div>
+      </section>
+
+      <section class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h2 class="h6 mb-0">Comentarios</h2>
+        </div>
+        <div class="card-body">
+          {% for comment in comments %}
+            <div class="border-bottom pb-3 mb-3">
+              <div class="small text-secondary">{{ comment.user.name }} - {{ comment.created_at }}</div>
+              <div>{{ comment.comment }}</div>
+            </div>
+          {% else %}
+            <p class="text-secondary mb-0">Todavia no hay comentarios.</p>
+          {% endfor %}
+        </div>
+        <form method="post" action="{{ url_for('cases.add_comment', item_id=audit_case.id) }}">
+          <div class="card-body border-top">
+            <label class="form-label" for="comment">Nuevo comentario</label>
+            <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+          </div>
+          <div class="card-footer bg-white">
+            <button class="btn btn-primary" type="submit">Agregar comentario</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card border-0 shadow-sm">
+        <div class="card-header bg-white">
+          <h2 class="h6 mb-0">Historial</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Fecha</th>
+                <th>Accion</th>
+                <th>Usuario</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in history %}
+                <tr>
+                  <td>{{ item.created_at }}</td>
+                  <td>{{ item.action }}</td>
+                  <td>{{ item.user.name if item.user else '-' }}</td>
+                  <td>{{ item.from_status or '-' }} -> {{ item.to_status or '-' }}</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td class="text-center text-secondary py-3" colspan="4">Sin historial.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+{% endblock %}
