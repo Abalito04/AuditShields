@@ -1,9 +1,13 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT = BASE_DIR.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 
 class Config:
@@ -13,8 +17,8 @@ class Config:
         "postgresql://auditshields:auditshields_dev_password@localhost:5432/auditshields",
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", "../data/imports")
-    EXPORT_FOLDER = os.getenv("EXPORT_FOLDER", "../data/exports")
+    UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", str(PROJECT_ROOT / "data" / "imports"))
+    EXPORT_FOLDER = os.getenv("EXPORT_FOLDER", str(PROJECT_ROOT / "data" / "exports"))
 
 
 class DevelopmentConfig(Config):

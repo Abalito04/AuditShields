@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Login | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <p class="text-uppercase text-secondary small fw-semibold mb-2">Acceso seguro</p>
+          <h1 class="h4 mb-4">Ingresar a AuditShields</h1>
+
+          <form method="post" action="{{ url_for('auth.login') }}" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="email">Email</label>
+              <input
+                class="form-control"
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                autofocus
+              >
+            </div>
+            <div class="mb-4">
+              <label class="form-label" for="password">Contrasena</label>
+              <input
+                class="form-control"
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+              >
+            </div>
+            <button class="btn btn-primary w-100" type="submit">Ingresar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
