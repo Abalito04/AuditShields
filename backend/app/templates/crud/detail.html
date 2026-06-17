@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">{{ module }}</p>
+      <h1 class="h3 mb-2">{{ title }}</h1>
+      <p class="text-secondary mb-0">{{ description }}</p>
+    </div>
+    <a class="btn btn-outline-primary" href="{{ edit_url }}">Editar</a>
+  </div>
+
+  <section class="card border-0 shadow-sm">
+    <div class="card-body">
+      <dl class="row mb-0">
+        {% for row in rows %}
+          <dt class="col-sm-3 text-secondary">{{ row.label }}</dt>
+          <dd class="col-sm-9">{{ row.value if row.value is not none and row.value != '' else '-' }}</dd>
+        {% endfor %}
+      </dl>
+    </div>
+  </section>
+
+  {% block extra_detail %}{% endblock %}
+{% endblock %}

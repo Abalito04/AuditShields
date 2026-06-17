@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">{{ module }}</p>
+    <h1 class="h3 mb-2">{{ title }}</h1>
+    <p class="text-secondary mb-0">{{ description }}</p>
+  </div>
+
+  <form class="card border-0 shadow-sm" method="post" novalidate>
+    <div class="card-body">
+      <div class="row g-3">
+        {% for field in fields %}
+          <div class="{{ field.wrapper_class or 'col-md-6' }}">
+            {% if field.type == 'select' %}
+              <label class="form-label" for="{{ field.name }}">{{ field.label }}</label>
+              <select class="form-select" id="{{ field.name }}" name="{{ field.name }}" {% if field.required %}required{% endif %}>
+                {% if field.empty_label %}
+                  <option value="">{{ field.empty_label }}</option>
+                {% endif %}
+                {% for option in field.options %}
+                  <option value="{{ option.value }}" {% if option.value|string == field.value|string %}selected{% endif %}>
+                    {{ option.label }}
+                  </option>
+                {% endfor %}
+              </select>
+            {% elif field.type == 'checkbox' %}
+              <div class="form-check mt-4">
+                <input class="form-check-input" id="{{ field.name }}" name="{{ field.name }}" type="checkbox" value="1" {% if field.value %}checked{% endif %}>
+                <label class="form-check-label" for="{{ field.name }}">{{ field.label }}</label>
+              </div>
+            {% else %}
+              <label class="form-label" for="{{ field.name }}">{{ field.label }}</label>
+              <input
+                class="form-control"
+                id="{{ field.name }}"
+                name="{{ field.name }}"
+                type="{{ field.type or 'text' }}"
+                value="{{ field.value if field.value is not none else '' }}"
+                {% if field.required %}required{% endif %}
+                {% if field.step %}step="{{ field.step }}"{% endif %}
+              >
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="card-footer bg-white d-flex justify-content-between">
+      <a class="btn btn-outline-secondary" href="{{ cancel_url }}">Cancelar</a>
+      <button class="btn btn-primary" type="submit">Guardar</button>
+    </div>
+  </form>
+{% endblock %}
