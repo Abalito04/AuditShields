@@ -31,7 +31,7 @@
             <dt class="col-sm-4 text-secondary">Score</dt>
             <dd class="col-sm-8">{{ alert.risk_score }}</dd>
             <dt class="col-sm-4 text-secondary">Monto</dt>
-            <dd class="col-sm-8">{{ alert.amount_at_risk or '-' }}</dd>
+            <dd class="col-sm-8">{{ alert.amount_at_risk|money_format }}</dd>
             <dt class="col-sm-4 text-secondary">Estado</dt>
             <dd class="col-sm-8">{{ alert_status_labels.get(alert.status, alert.status) }}</dd>
             <dt class="col-sm-4 text-secondary">Fingerprint</dt>

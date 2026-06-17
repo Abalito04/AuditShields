@@ -15,6 +15,7 @@ from app.routes.purchases import purchases_bp
 from app.routes.reports import reports_bp
 from app.routes.suppliers import suppliers_bp
 from app.routes.users import users_bp
+from app.utils.formatting import money_format
 
 
 def create_app(config_object: str | None = None) -> Flask:
@@ -26,6 +27,7 @@ def create_app(config_object: str | None = None) -> Flask:
         app.config.from_object(DevelopmentConfig)
 
     register_extensions(app)
+    register_template_filters(app)
     register_blueprints(app)
     register_security_hooks(app)
 
@@ -38,6 +40,10 @@ def register_extensions(app: Flask) -> None:
 
     migrate.init_app(app, db)
     login_manager.init_app(app)
+
+
+def register_template_filters(app: Flask) -> None:
+    app.jinja_env.filters["money_format"] = money_format
 
 
 def register_blueprints(app: Flask) -> None:
