@@ -9,69 +9,98 @@
       rel="stylesheet"
       crossorigin="anonymous"
     >
+    <style>
+      body { background: #f5f7fb; }
+      .app-shell { min-height: 100vh; }
+      .sidebar { width: 280px; background: #111827; color: #e5e7eb; }
+      .sidebar a { color: #cbd5e1; text-decoration: none; }
+      .sidebar a:hover, .sidebar a.active { background: #1f2937; color: #ffffff; }
+      .sidebar-section { color: #94a3b8; font-size: .72rem; letter-spacing: .08em; }
+      .content-panel { min-width: 0; }
+      .topbar { background: #ffffff; border-bottom: 1px solid #e5e7eb; }
+      @media (max-width: 991.98px) {
+        .sidebar { width: 100%; }
+      }
+    </style>
   </head>
-  <body class="bg-light">
-    <nav class="navbar navbar-expand-lg bg-white border-bottom">
-      <div class="container">
-        <a class="navbar-brand fw-semibold" href="{{ url_for('dashboard.index') }}">AuditShields</a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#mainNav"
-          aria-controls="mainNav"
-          aria-expanded="false"
-          aria-label="Abrir navegacion"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mainNav">
-          <ul class="navbar-nav ms-auto">
-            {% if current_user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link active" href="{{ url_for('dashboard.index') }}">Dashboard</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  {{ current_user.name }} ({{ current_user.role }})
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <form method="post" action="{{ url_for('auth.logout') }}">
-                      <button class="dropdown-item" type="submit">Cerrar sesion</button>
-                    </form>
-                  </li>
-                </ul>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth.login_form') }}">Login</a>
-              </li>
-            {% endif %}
-          </ul>
+  <body>
+    {% set nav_items = [
+      ('dashboard.index', 'Dashboard'),
+      ('imports.index', 'Importaciones'),
+      ('suppliers.index', 'Proveedores'),
+      ('purchases.purchase_orders', 'Ordenes de compra'),
+      ('purchases.invoices', 'Facturas'),
+      ('purchases.payments', 'Pagos'),
+      ('inventory.products', 'Productos'),
+      ('inventory.stock', 'Stock'),
+      ('inventory.stock_movements', 'Movimientos'),
+      ('alerts.index', 'Alertas'),
+      ('cases.index', 'Casos'),
+      ('reports.index', 'Reportes'),
+      ('users.index', 'Usuarios')
+    ] %}
+
+    {% if current_user.is_authenticated %}
+      <div class="app-shell d-lg-flex">
+        <aside class="sidebar p-3">
+          <div class="mb-4">
+            <a class="d-block fs-5 fw-semibold text-white" href="{{ url_for('dashboard.index') }}">AuditShields</a>
+            <div class="small text-secondary">Control antifraude PyME</div>
+          </div>
+
+          <nav class="d-grid gap-1">
+            <div class="sidebar-section text-uppercase fw-semibold mb-1">Operacion</div>
+            {% for endpoint, label in nav_items[:9] %}
+              <a
+                class="px-3 py-2 rounded {% if request.endpoint == endpoint %}active{% endif %}"
+                href="{{ url_for(endpoint) }}"
+              >{{ label }}</a>
+            {% endfor %}
+
+            <div class="sidebar-section text-uppercase fw-semibold mt-3 mb-1">Auditoria</div>
+            {% for endpoint, label in nav_items[9:] %}
+              <a
+                class="px-3 py-2 rounded {% if request.endpoint == endpoint %}active{% endif %}"
+                href="{{ url_for(endpoint) }}"
+              >{{ label }}</a>
+            {% endfor %}
+          </nav>
+        </aside>
+
+        <div class="content-panel flex-grow-1">
+          <header class="topbar px-4 py-3 d-flex align-items-center justify-content-between">
+            <div>
+              <div class="small text-secondary">Sesion activa</div>
+              <div class="fw-semibold">{{ current_user.name }} · {{ current_user.role }}</div>
+            </div>
+            <form method="post" action="{{ url_for('auth.logout') }}">
+              <button class="btn btn-outline-secondary btn-sm" type="submit">Cerrar sesion</button>
+            </form>
+          </header>
+          <main class="p-4">
+    {% else %}
+      <main class="container py-5">
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mb-2" role="alert">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    {% if current_user.is_authenticated %}
+          </main>
         </div>
       </div>
-    </nav>
-
-    <main class="container py-4">
-      {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-          <div class="mb-4">
-            {% for category, message in messages %}
-              <div class="alert alert-{{ category }} mb-2" role="alert">{{ message }}</div>
-            {% endfor %}
-          </div>
-        {% endif %}
-      {% endwith %}
-
-      {% block content %}{% endblock %}
-    </main>
+    {% else %}
+      </main>
+    {% endif %}
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -3,12 +3,15 @@
 {% block title %}Dashboard | AuditShields{% endblock %}
 
 {% block content %}
-  <section class="mb-4">
-    <p class="text-uppercase text-secondary small fw-semibold mb-2">Auditoria continua antifraude</p>
-    <h1 class="h3 mb-3">Dashboard inicial</h1>
-    <p class="lead text-secondary">
-      Base Flask lista para conectar datos, reglas explicables, alertas y casos de auditoria.
-    </p>
+  <section class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">Auditoria continua antifraude</p>
+      <h1 class="h3 mb-2">Dashboard</h1>
+      <p class="text-secondary mb-0">
+        Base operativa para compras, pagos, stock, alertas y casos de auditoria.
+      </p>
+    </div>
+    <span class="badge text-bg-primary">MVP</span>
   </section>
 
   <section class="row g-3">
@@ -17,7 +20,7 @@
         <div class="card-body">
           <h2 class="h6">Compras y pagos</h2>
           <p class="text-secondary mb-0">
-            Proximamente: proveedores, ordenes, facturas, pagos y controles antifraude.
+            Proveedores, ordenes, facturas, pagos y controles antifraude explicables.
           </p>
         </div>
       </div>
@@ -27,7 +30,7 @@
         <div class="card-body">
           <h2 class="h6">Stock e inventario</h2>
           <p class="text-secondary mb-0">
-            Proximamente: productos, movimientos, snapshots y diferencias de stock.
+            Productos, movimientos, snapshots y diferencias de stock.
           </p>
         </div>
       </div>
@@ -37,9 +40,23 @@
         <div class="card-body">
           <h2 class="h6">Alertas y casos</h2>
           <p class="text-secondary mb-0">
-            Proximamente: reglas trazables, alertas persistidas y casos auditables.
+            Reglas trazables, alertas persistidas y casos auditables hasta el cierre.
           </p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card border-0 shadow-sm mt-4">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Flujo objetivo del MVP</h2>
+      <div class="row g-2 text-secondary small">
+        <div class="col-md">Carga de datos</div>
+        <div class="col-md">Validacion</div>
+        <div class="col-md">Reglas</div>
+        <div class="col-md">Alertas</div>
+        <div class="col-md">Casos</div>
+        <div class="col-md">Reporte Excel</div>
       </div>
     </div>
   </section>

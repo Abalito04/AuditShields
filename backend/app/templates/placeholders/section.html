@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">{{ module }}</p>
+      <h1 class="h3 mb-2">{{ title }}</h1>
+      <p class="text-secondary mb-0">{{ description }}</p>
+    </div>
+    <span class="badge text-bg-light border">Placeholder</span>
+  </div>
+
+  <section class="card border-0 shadow-sm">
+    <div class="card-body">
+      <h2 class="h6 mb-3">Proxima implementacion</h2>
+      <p class="text-secondary mb-0">
+        Esta seccion ya tiene ruta, navegacion y template base. La logica de negocio,
+        formularios, listados y acciones se agregaran en los prompts correspondientes.
+      </p>
+    </div>
+  </section>
+{% endblock %}

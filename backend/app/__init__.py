@@ -4,8 +4,16 @@ from importlib import import_module
 from app.config import DevelopmentConfig
 from app.extensions import db, login_manager, migrate
 from app.models.user import ROLE_READONLY
+from app.routes.alerts import alerts_bp
 from app.routes.auth import auth_bp
+from app.routes.cases import cases_bp
 from app.routes.dashboard import dashboard_bp
+from app.routes.imports import imports_bp
+from app.routes.inventory import inventory_bp
+from app.routes.purchases import purchases_bp
+from app.routes.reports import reports_bp
+from app.routes.suppliers import suppliers_bp
+from app.routes.users import users_bp
 
 
 def create_app(config_object: str | None = None) -> Flask:
@@ -34,6 +42,14 @@ def register_extensions(app: Flask) -> None:
 def register_blueprints(app: Flask) -> None:
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(imports_bp)
+    app.register_blueprint(suppliers_bp)
+    app.register_blueprint(purchases_bp)
+    app.register_blueprint(inventory_bp)
+    app.register_blueprint(alerts_bp)
+    app.register_blueprint(cases_bp)
+    app.register_blueprint(reports_bp)
+    app.register_blueprint(users_bp)
 
 
 def register_security_hooks(app: Flask) -> None:
