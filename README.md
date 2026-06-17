@@ -145,6 +145,29 @@ Password: admin123
 Role: admin
 ```
 
+## Demo Data
+
+To load realistic demo data for the antifraud rules:
+
+```bash
+cd backend
+python seed/seed_demo_data.py
+```
+
+The script recreates only records with demo prefixes such as `DEMO-PROV-` and `DEMO-SKU-`. It includes normal records and suspicious scenarios: incomplete suppliers, shared bank accounts, duplicate invoices, duplicate payments, payments without invoice, high payments to a new supplier, stock differences, repeated adjustments, negative stock and movements outside business hours.
+
+CSV samples for testing imports are available in `data/samples`. Import them from `/imports/new` in this order:
+
+```text
+01_suppliers_demo.csv
+02_purchase_orders_demo.csv
+03_invoices_demo.csv
+04_payments_demo.csv
+05_products_demo.csv
+07_stock_movements_demo.csv
+06_inventory_snapshots_demo.csv
+```
+
 ## Railway Deploy
 
 Recommended Railway service root directory:

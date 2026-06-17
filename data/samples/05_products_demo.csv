@@ -1,0 +1,4 @@
+sku,name,category,unit_cost,is_active
+CSV-SKU-001,Tornillo industrial,Ferreteria,120,true
+CSV-SKU-002,Guante nitrilo,Seguridad,850,true
+CSV-SKU-003,Repuesto critico A,Repuestos,45000,true

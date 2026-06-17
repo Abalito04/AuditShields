@@ -1,0 +1,6 @@
+po_number,supplier_code,requester_user_code,approver_user_code,order_date,total_amount,status
+CSV-OC-001,CSV-PROV-001,Ana Perez,Luis Gomez,2026-06-01,180000,approved
+CSV-OC-002,CSV-PROV-002,Carlos Ruiz,Carlos Ruiz,2026-06-05,480000,approved
+CSV-OC-003,CSV-PROV-002,Carlos Ruiz,Marta Silva,2026-06-06,475000,approved
+CSV-OC-004,CSV-PROV-002,Carlos Ruiz,Marta Silva,2026-06-07,490000,approved
+CSV-OC-005,CSV-PROV-004,Ana Perez,Luis Gomez,2026-06-12,950000,draft

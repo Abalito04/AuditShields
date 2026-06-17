@@ -1,0 +1,4 @@
+sku,snapshot_date,expected_quantity,physical_quantity
+CSV-SKU-001,2026-06-16,380,378
+CSV-SKU-002,2026-06-16,200,95
+CSV-SKU-003,2026-06-16,-18,-18

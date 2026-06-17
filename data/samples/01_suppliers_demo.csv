@@ -1,0 +1,6 @@
+supplier_code,name,tax_id,bank_account,address,phone,email,created_date,status
+CSV-PROV-001,Insumos Norte SA,30-11111111-1,CBU-CSV-0001,Av. Control 1200,1144441001,administracion@insumosnorte.demo,2026-05-01,active
+CSV-PROV-002,Logistica Delta SRL,30-22222222-2,CBU-CSV-COMPARTIDA,Ruta 8 Km 42,1144441002,facturacion@logisticadelta.demo,2026-05-10,active
+CSV-PROV-003,Servicios Prisma,30-33333333-3,CBU-CSV-COMPARTIDA,Calle Auditoria 455,1144441003,contacto@prisma.demo,2026-05-15,active
+CSV-PROV-004,Proveedor Express Nuevo,30-44444444-4,CBU-CSV-0004,Pasaje Riesgo 77,1144441004,ventas@expressnuevo.demo,2026-06-10,active
+CSV-PROV-005,Proveedor Incompleto,,,,1144441005,,2026-06-12,active

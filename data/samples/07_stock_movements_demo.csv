@@ -1,0 +1,8 @@
+sku,movement_type,quantity,movement_date,reference,reason,created_by_user_code
+CSV-SKU-001,IN,500,2026-06-01 09:00,CSV-REM-001,Compra inicial,Ana Perez
+CSV-SKU-001,OUT,120,2026-06-07 10:00,CSV-EGR-001,Consumo produccion,Ana Perez
+CSV-SKU-002,ADJUSTMENT,-35,2026-06-10 16:20,CSV-AJ-001,Ajuste manual,Carlos Ruiz
+CSV-SKU-002,ADJUSTMENT,-42,2026-06-12 17:10,CSV-AJ-002,Ajuste manual,Carlos Ruiz
+CSV-SKU-002,ADJUSTMENT,-28,2026-06-14 17:55,CSV-AJ-003,,Carlos Ruiz
+CSV-SKU-003,OUT,12,2026-06-15 13:20,,Egreso sin documento,Marta Silva
+CSV-SKU-003,OUT,6,2026-06-15 22:15,CSV-EGR-FH,Movimiento fuera de horario,Marta Silva
