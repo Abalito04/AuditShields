@@ -75,4 +75,79 @@ Copy the example environment file and adjust values if needed:
 copy .env.example .env
 ```
 
-Future phases will add the Flask app factory, migrations, routes, models, authentication, imports, antifraud rules, alerts, audit cases, and Excel reports.
+Future phases will add migrations, domain models, authentication, imports, antifraud rules, alerts, audit cases, and Excel reports.
+
+## Run Flask Locally
+
+From `backend/`, with the virtual environment active:
+
+```bash
+flask run
+```
+
+Or:
+
+```bash
+python run.py
+```
+
+The initial dashboard is available at:
+
+```text
+http://127.0.0.1:5000/
+```
+
+## Database Migrations
+
+With `DATABASE_URL` pointing to PostgreSQL and the virtual environment active:
+
+```bash
+cd backend
+flask db upgrade
+```
+
+The initial migration creates the base security, purchasing, inventory, antifraud, alert, case, import, and audit log tables.
+
+## Initial Admin User
+
+After running migrations, create the initial admin user:
+
+```bash
+cd backend
+python seed/seed_users.py
+```
+
+Development credentials:
+
+```text
+Email: admin@auditshields.local
+Password: admin123
+Role: admin
+```
+
+## Railway Deploy
+
+Recommended Railway service root directory:
+
+```text
+backend
+```
+
+Add these variables to the Flask app service:
+
+```env
+DATABASE_URL=${{Postgres.DATABASE_URL}}
+SECRET_KEY=replace-with-a-long-random-secret
+FLASK_APP=run.py
+FLASK_ENV=production
+```
+
+If the PostgreSQL service has another name, replace `Postgres` in the `DATABASE_URL` reference.
+
+Railway uses [backend/railway.json](backend/railway.json) to start the app with Gunicorn:
+
+```bash
+gunicorn run:app --bind 0.0.0.0:$PORT
+```
+
+If Railway is configured from the repository root instead, the root-level [railway.json](railway.json), [requirements.txt](requirements.txt), and [Procfile](Procfile) point Railpack to the backend app.
