@@ -205,6 +205,29 @@ Audit results are visible from:
 
 Each alert has an explanatory detail page with rule, score, risk level and evidence JSON. Each alert creates an audit case that can be assigned, commented, moved through statuses and reviewed through its history.
 
+## Dashboard and Reports
+
+The dashboard shows real metrics from the database:
+
+- active alerts;
+- open cases;
+- critical cases;
+- amount at risk;
+- observed suppliers;
+- observed products;
+- latest cases;
+- top triggered rules;
+- cases by status;
+- alerts by module.
+
+Excel reports are available from `/reports`:
+
+```text
+/reports/cases.xlsx
+/reports/alerts.xlsx
+/reports/risk-summary.xlsx
+```
+
 ## Railway Deploy
 
 Recommended Railway service root directory:

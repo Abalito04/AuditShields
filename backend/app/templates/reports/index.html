@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Reportes | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Exportaciones</p>
+    <h1 class="h3 mb-2">Reportes Excel</h1>
+    <p class="text-secondary mb-0">Descargas para compartir alertas, casos y resumen ejecutivo de riesgo.</p>
+  </div>
+
+  <section class="row g-3">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6">Casos de auditoria</h2>
+          <p class="text-secondary">Listado completo de casos, estado, riesgo, responsable y resolucion.</p>
+          <a class="btn btn-primary" href="{{ url_for('reports.cases_xlsx') }}">Descargar casos</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6">Alertas</h2>
+          <p class="text-secondary">Alertas generadas por regla, modulo, entidad, score y monto en riesgo.</p>
+          <a class="btn btn-primary" href="{{ url_for('reports.alerts_xlsx') }}">Descargar alertas</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h2 class="h6">Resumen de riesgo</h2>
+          <p class="text-secondary">Resumen general con hojas por estado, regla, proveedor y productos observados.</p>
+          <a class="btn btn-primary" href="{{ url_for('reports.risk_summary_xlsx') }}">Descargar resumen</a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -7,62 +7,161 @@
     <div>
       <p class="text-uppercase text-secondary small fw-semibold mb-2">Auditoria continua antifraude</p>
       <h1 class="h3 mb-2">Dashboard</h1>
-      <p class="text-secondary mb-0">
-        Base operativa para compras, pagos, stock, alertas y casos de auditoria.
-      </p>
+      <p class="text-secondary mb-0">Indicadores reales de alertas, casos y monto en riesgo.</p>
     </div>
-    <div class="d-flex gap-2 align-items-center">
-      <form method="post" action="{{ url_for('audit.run') }}">
-        <button class="btn btn-primary" type="submit">Ejecutar auditoria</button>
-      </form>
-      <span class="badge text-bg-primary">MVP</span>
+    <form method="post" action="{{ url_for('audit.run') }}">
+      <button class="btn btn-primary" type="submit">Ejecutar auditoria</button>
+    </form>
+  </section>
+
+  <section class="row g-3 mb-4">
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-secondary small">Alertas activas</div>
+          <div class="display-6 fw-semibold">{{ metrics.active_alerts }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-secondary small">Casos abiertos</div>
+          <div class="display-6 fw-semibold">{{ metrics.open_cases }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-secondary small">Casos criticos</div>
+          <div class="display-6 fw-semibold">{{ metrics.critical_cases }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-secondary small">Monto en riesgo</div>
+          <div class="h2 fw-semibold mb-0">{{ metrics.amount_at_risk }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-secondary small">Proveedores observados</div>
+          <div class="display-6 fw-semibold">{{ metrics.suppliers_observed }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="text-secondary small">Productos observados</div>
+          <div class="display-6 fw-semibold">{{ metrics.products_observed }}</div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="row g-3">
-    <div class="col-md-4">
-      <div class="card h-100 border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h6">Compras y pagos</h2>
-          <p class="text-secondary mb-0">
-            Proveedores, ordenes, facturas, pagos y controles antifraude explicables.
-          </p>
+  <div class="row g-4">
+    <div class="col-xl-7">
+      <section class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+          <h2 class="h6 mb-0">Ultimos casos</h2>
+          <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('cases.index') }}">Ver casos</a>
         </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card h-100 border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h6">Stock e inventario</h2>
-          <p class="text-secondary mb-0">
-            Productos, movimientos, snapshots y diferencias de stock.
-          </p>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Caso</th>
+                <th>Titulo</th>
+                <th>Riesgo</th>
+                <th>Estado</th>
+                <th class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for audit_case in metrics.latest_cases %}
+                <tr>
+                  <td>{{ audit_case.case_number }}</td>
+                  <td>{{ audit_case.title }}</td>
+                  <td>{{ risk_level_labels.get(audit_case.risk_level, audit_case.risk_level) }}</td>
+                  <td>{{ case_status_labels.get(audit_case.status, audit_case.status) }}</td>
+                  <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" href="{{ url_for('cases.detail', item_id=audit_case.id) }}">Revisar</a>
+                  </td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td class="text-center text-secondary py-4" colspan="5">Todavia no hay casos.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-      </div>
+      </section>
     </div>
-    <div class="col-md-4">
-      <div class="card h-100 border-0 shadow-sm">
-        <div class="card-body">
-          <h2 class="h6">Alertas y casos</h2>
-          <p class="text-secondary mb-0">
-            Reglas trazables, alertas persistidas y casos auditables hasta el cierre.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="card border-0 shadow-sm mt-4">
-    <div class="card-body">
-      <h2 class="h6 mb-3">Flujo objetivo del MVP</h2>
-      <div class="row g-2 text-secondary small">
-        <div class="col-md">Carga de datos</div>
-        <div class="col-md">Validacion</div>
-        <div class="col-md">Reglas</div>
-        <div class="col-md">Alertas</div>
-        <div class="col-md">Casos</div>
-        <div class="col-md">Reporte Excel</div>
-      </div>
+    <div class="col-xl-5">
+      <section class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white">
+          <h2 class="h6 mb-0">Reglas mas activadas</h2>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Regla</th>
+                <th>Nombre</th>
+                <th>Alertas</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in top_rules %}
+                <tr>
+                  <td>{{ item.rule.code }}</td>
+                  <td>{{ item.rule.name }}</td>
+                  <td>{{ item.count }}</td>
+                </tr>
+              {% else %}
+                <tr>
+                  <td class="text-center text-secondary py-3" colspan="3">Sin alertas.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card border-0 shadow-sm">
+        <div class="card-header bg-white">
+          <h2 class="h6 mb-0">Distribucion</h2>
+        </div>
+        <div class="card-body">
+          <h3 class="h6">Casos por estado</h3>
+          {% for status, count in metrics.cases_by_status %}
+            <div class="d-flex justify-content-between border-bottom py-2">
+              <span>{{ case_status_labels.get(status, status) }}</span>
+              <strong>{{ count }}</strong>
+            </div>
+          {% else %}
+            <p class="text-secondary">Sin casos.</p>
+          {% endfor %}
+
+          <h3 class="h6 mt-4">Alertas por modulo</h3>
+          {% for module, count in metrics.alerts_by_module %}
+            <div class="d-flex justify-content-between border-bottom py-2">
+              <span>{{ module_labels.get(module, module) }}</span>
+              <strong>{{ count }}</strong>
+            </div>
+          {% else %}
+            <p class="text-secondary mb-0">Sin alertas.</p>
+          {% endfor %}
+        </div>
+      </section>
     </div>
-  </section>
+  </div>
 {% endblock %}
