@@ -144,6 +144,8 @@ FLASK_ENV=production
 
 If the PostgreSQL service has another name, replace `Postgres` in the `DATABASE_URL` reference.
 
+The project pins Python 3.12 with `.python-version` so Railway installs wheels for dependencies such as pandas instead of trying to compile them from source.
+
 Railway uses [backend/railway.json](backend/railway.json) to start the app with Gunicorn:
 
 ```bash
