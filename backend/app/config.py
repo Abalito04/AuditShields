@@ -12,6 +12,7 @@ load_dotenv(BASE_DIR / ".env")
 
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "change-me")
+    FLASK_ENV = os.getenv("FLASK_ENV", "development")
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
         "postgresql://auditshields:auditshields_dev_password@localhost:5432/auditshields",
@@ -23,6 +24,10 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+
+
+class ProductionConfig(Config):
+    DEBUG = False
 
 
 class TestingConfig(Config):
