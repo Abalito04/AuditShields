@@ -221,7 +221,7 @@ def movement_detail(item_id: int):
             {"label": "Fecha", "value": movement.movement_date},
             {"label": "Referencia", "value": movement.reference},
             {"label": "Motivo", "value": movement.reason},
-            {"label": "Usuario operativo", "value": movement.created_by_user_code},
+            {"label": "Nombre y apellido del operador", "value": movement.created_by_user_code},
         ],
         edit_url=url_for("inventory.edit_movement", item_id=movement.id),
     )
@@ -421,7 +421,11 @@ def _render_movement_form(movement: StockMovement, title: str):
             ),
             _field("reference", "Referencia", movement.reference),
             _field("reason", "Motivo", movement.reason),
-            _field("created_by_user_code", "Usuario operativo", movement.created_by_user_code),
+            _field(
+                "created_by_user_code",
+                "Nombre y apellido del operador",
+                movement.created_by_user_code,
+            ),
         ],
         cancel_url=url_for("inventory.stock_movements"),
     )

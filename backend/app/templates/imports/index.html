@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Importaciones | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">Carga de datos</p>
+      <h1 class="h3 mb-2">Importaciones</h1>
+      <p class="text-secondary mb-0">Carga masiva Excel/CSV, validaciones por fila y trazabilidad de archivos.</p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('imports.new') }}">Nueva importacion</a>
+  </div>
+
+  <section class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white">
+      <h2 class="h6 mb-0">Plantillas descargables</h2>
+    </div>
+    <div class="card-body">
+      <div class="row g-2">
+        {% for entity_type, schema in entity_schemas.items() %}
+          <div class="col-md-6 col-xl-3">
+            <a class="btn btn-outline-secondary w-100 text-start" href="{{ url_for('imports.download_template', entity_type=entity_type) }}">
+              {{ schema.label }}
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Archivo</th>
+            <th>Entidad</th>
+            <th>Estado</th>
+            <th>Filas</th>
+            <th>Importadas</th>
+            <th>Rechazadas</th>
+            <th>Fecha</th>
+            <th class="text-end">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for import_log in pagination.items %}
+            <tr>
+              <td>{{ import_log.file_name }}</td>
+              <td>{{ entity_schemas.get(import_log.entity_type).label if entity_schemas.get(import_log.entity_type) else import_log.entity_type }}</td>
+              <td>{{ import_log.status }}</td>
+              <td>{{ import_log.total_rows }}</td>
+              <td>{{ import_log.imported_rows }}</td>
+              <td>{{ import_log.rejected_rows }}</td>
+              <td>{{ import_log.created_at }}</td>
+              <td class="text-end">
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('imports.detail', item_id=import_log.id) }}">Ver</a>
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td class="text-center text-secondary py-4" colspan="8">
+                Todavia no hay importaciones registradas.
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  {% if pagination.pages > 1 %}
+    <nav class="mt-4" aria-label="Paginacion">
+      <ul class="pagination mb-0">
+        <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('imports.index', page=pagination.prev_num) }}">Anterior</a>
+        </li>
+        <li class="page-item disabled">
+          <span class="page-link">Pagina {{ pagination.page }} de {{ pagination.pages }}</span>
+        </li>
+        <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+          <a class="page-link" href="{{ url_for('imports.index', page=pagination.next_num) }}">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
+  {% endif %}
+{% endblock %}

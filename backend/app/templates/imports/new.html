@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Nueva importacion | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="mb-4">
+    <p class="text-uppercase text-secondary small fw-semibold mb-2">Carga de datos</p>
+    <h1 class="h3 mb-2">Nueva importacion</h1>
+    <p class="text-secondary mb-0">Subi un archivo Excel o CSV usando las columnas de las plantillas oficiales.</p>
+  </div>
+
+  <form class="card border-0 shadow-sm" action="{{ url_for('imports.upload') }}" method="post" enctype="multipart/form-data">
+    <div class="card-body">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label" for="entity_type">Entidad</label>
+          <select class="form-select" id="entity_type" name="entity_type" required>
+            {% for entity_type, schema in entity_schemas.items() %}
+              {% if entity_type != 'operational_users' %}
+                <option value="{{ entity_type }}">{{ schema.label }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label" for="file">Archivo</label>
+          <input class="form-control" id="file" name="file" type="file" accept=".xlsx,.csv" required>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer bg-white d-flex justify-content-between">
+      <a class="btn btn-outline-secondary" href="{{ url_for('imports.index') }}">Cancelar</a>
+      <button class="btn btn-primary" type="submit">Importar</button>
+    </div>
+  </form>
+
+  <section class="card border-0 shadow-sm mt-4">
+    <div class="card-header bg-white">
+      <h2 class="h6 mb-0">Plantillas</h2>
+    </div>
+    <div class="card-body">
+      <div class="row g-2">
+        {% for entity_type, schema in entity_schemas.items() %}
+          <div class="col-md-6 col-xl-3">
+            <a class="btn btn-outline-secondary w-100 text-start" href="{{ url_for('imports.download_template', entity_type=entity_type) }}">
+              {{ schema.label }}
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Importacion {{ import_log.id }} | AuditShields{% endblock %}
+
+{% block content %}
+  <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">Carga de datos</p>
+      <h1 class="h3 mb-2">{{ import_log.file_name }}</h1>
+      <p class="text-secondary mb-0">Resultado de importacion y errores por fila.</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="{{ url_for('imports.index') }}">Volver</a>
+  </div>
+
+  <section class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <dl class="row mb-0">
+        <dt class="col-sm-3 text-secondary">Entidad</dt>
+        <dd class="col-sm-9">{{ import_log.entity_type }}</dd>
+        <dt class="col-sm-3 text-secondary">Estado</dt>
+        <dd class="col-sm-9">{{ import_log.status }}</dd>
+        <dt class="col-sm-3 text-secondary">Filas procesadas</dt>
+        <dd class="col-sm-9">{{ import_log.total_rows }}</dd>
+        <dt class="col-sm-3 text-secondary">Importadas</dt>
+        <dd class="col-sm-9">{{ import_log.imported_rows }}</dd>
+        <dt class="col-sm-3 text-secondary">Rechazadas</dt>
+        <dd class="col-sm-9">{{ import_log.rejected_rows }}</dd>
+        <dt class="col-sm-3 text-secondary">Fecha</dt>
+        <dd class="col-sm-9">{{ import_log.created_at }}</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="card border-0 shadow-sm">
+    <div class="card-header bg-white">
+      <h2 class="h6 mb-0">Errores</h2>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Fila</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for error in import_log.errors_json or [] %}
+            <tr>
+              <td>{{ error.row or '-' }}</td>
+              <td>
+                {% for message in error.errors %}
+                  <div>{{ message }}</div>
+                {% endfor %}
+              </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td class="text-center text-secondary py-4" colspan="2">
+                No hubo errores en esta importacion.
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}

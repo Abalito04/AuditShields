@@ -108,6 +108,26 @@ flask db upgrade
 
 The initial migration creates the base security, purchasing, inventory, antifraud, alert, case, import, and audit log tables.
 
+## Importaciones y plantillas
+
+Con la app corriendo, desde la seccion `Importaciones` se pueden descargar plantillas Excel y subir archivos `.xlsx` o `.csv`.
+
+Rutas utiles:
+
+```text
+/imports
+/imports/new
+/templates/suppliers/download
+/templates/purchase_orders/download
+/templates/invoices/download
+/templates/payments/download
+/templates/products/download
+/templates/inventory_snapshots/download
+/templates/stock_movements/download
+```
+
+La importacion valida columnas obligatorias, tipos basicos, montos, fechas y relaciones por codigos externos como `supplier_code`, `po_number`, `invoice_number` y `sku`. Las filas invalidas se rechazan y quedan registradas en el detalle de la importacion.
+
 ## Initial Admin User
 
 After running migrations, create the initial admin user:

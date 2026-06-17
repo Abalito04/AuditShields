@@ -94,8 +94,8 @@ def purchase_order_detail(item_id: int):
         rows=[
             {"label": "Numero", "value": order.po_number},
             {"label": "Proveedor", "value": order.supplier.name},
-            {"label": "Solicitante", "value": order.requester_user_code},
-            {"label": "Aprobador", "value": order.approver_user_code},
+            {"label": "Nombre y apellido del solicitante", "value": order.requester_user_code},
+            {"label": "Nombre y apellido del aprobador", "value": order.approver_user_code},
             {"label": "Fecha", "value": order.order_date},
             {"label": "Monto", "value": order.total_amount},
             {"label": "Estado", "value": order.status},
@@ -251,7 +251,7 @@ def payment_detail(item_id: int):
             {"label": "Monto", "value": payment.amount},
             {"label": "Metodo", "value": payment.payment_method},
             {"label": "Cuenta bancaria", "value": payment.bank_account},
-            {"label": "Usuario operativo", "value": payment.created_by_user_code},
+            {"label": "Nombre y apellido del operador", "value": payment.created_by_user_code},
         ],
         edit_url=url_for("purchases.edit_payment", item_id=payment.id),
     )
@@ -401,8 +401,16 @@ def _render_purchase_order_form(order: PurchaseOrder, title: str):
         fields=[
             _field("po_number", "Numero de orden", order.po_number, required=True),
             _select("supplier_id", "Proveedor", order.supplier_id, _supplier_options(), required=True),
-            _field("requester_user_code", "Usuario solicitante", order.requester_user_code),
-            _field("approver_user_code", "Usuario aprobador", order.approver_user_code),
+            _field(
+                "requester_user_code",
+                "Nombre y apellido del solicitante",
+                order.requester_user_code,
+            ),
+            _field(
+                "approver_user_code",
+                "Nombre y apellido del aprobador",
+                order.approver_user_code,
+            ),
             _field("order_date", "Fecha", order.order_date, field_type="date"),
             _field("total_amount", "Monto total", order.total_amount, field_type="number", step="0.01"),
             _field("status", "Estado", order.status),
@@ -456,7 +464,11 @@ def _render_payment_form(payment: Payment, title: str):
             _field("amount", "Monto", payment.amount, field_type="number", step="0.01"),
             _field("payment_method", "Metodo de pago", payment.payment_method),
             _field("bank_account", "Cuenta bancaria", payment.bank_account),
-            _field("created_by_user_code", "Usuario operativo", payment.created_by_user_code),
+            _field(
+                "created_by_user_code",
+                "Nombre y apellido del operador",
+                payment.created_by_user_code,
+            ),
         ],
         cancel_url=url_for("purchases.payments"),
     )
