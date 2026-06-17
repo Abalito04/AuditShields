@@ -168,6 +168,12 @@ CSV samples for testing imports are available in `data/samples`. Import them fro
 06_inventory_snapshots_demo.csv
 ```
 
+## Run Antifraud Audit
+
+From the dashboard, use `Ejecutar auditoria` to run the fraud engine. The base engine creates the default rule catalog, executes active rule functions, persists new alerts, ignores duplicated fingerprints and creates one audit case per alert.
+
+The concrete rule detections are implemented progressively in the next phases. Until purchase and inventory rules are filled in, the engine can run successfully but may return zero alerts.
+
 ## Railway Deploy
 
 Recommended Railway service root directory:

@@ -11,7 +11,12 @@
         Base operativa para compras, pagos, stock, alertas y casos de auditoria.
       </p>
     </div>
-    <span class="badge text-bg-primary">MVP</span>
+    <div class="d-flex gap-2 align-items-center">
+      <form method="post" action="{{ url_for('audit.run') }}">
+        <button class="btn btn-primary" type="submit">Ejecutar auditoria</button>
+      </form>
+      <span class="badge text-bg-primary">MVP</span>
+    </div>
   </section>
 
   <section class="row g-3">
