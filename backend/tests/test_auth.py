@@ -6,8 +6,14 @@ def test_app_creates(client):
     assert response.status_code == 200
 
 
+def test_landing_is_public(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"AuditShields" in response.data
+
+
 def test_dashboard_requires_login(client):
-    response = client.get("/", follow_redirects=False)
+    response = client.get("/dashboard", follow_redirects=False)
     assert response.status_code in {302, 401}
 
 
