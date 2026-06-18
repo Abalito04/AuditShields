@@ -7,6 +7,7 @@ from app.models import Alert
 from app.utils.labels import (
     ALERT_STATUS_LABELS,
     ENTITY_TYPE_LABELS,
+    EVIDENCE_FIELD_LABELS,
     MODULE_LABELS,
     RISK_LEVEL_LABELS,
 )
@@ -51,10 +52,12 @@ def index():
 def detail(item_id: int):
     alert = Alert.query.get_or_404(item_id)
     evidence_json = json.dumps(alert.evidence_json or {}, indent=2, ensure_ascii=False)
+    evidence_items = _evidence_items(alert.evidence_json or {})
     return render_template(
         "alerts/detail.html",
         alert=alert,
         evidence_json=evidence_json,
+        evidence_items=evidence_items,
         module_labels=MODULE_LABELS,
         risk_level_labels=RISK_LEVEL_LABELS,
         alert_status_labels=ALERT_STATUS_LABELS,
@@ -65,3 +68,23 @@ def detail(item_id: int):
 def _distinct_values(column):
     values = [row[0] for row in Alert.query.with_entities(column).distinct().order_by(column).all()]
     return [value for value in values if value]
+
+
+def _evidence_items(evidence: dict) -> list[dict]:
+    return [
+        {
+            "label": EVIDENCE_FIELD_LABELS.get(key, key.replace("_", " ").title()),
+            "value": _evidence_value(value),
+        }
+        for key, value in evidence.items()
+    ]
+
+
+def _evidence_value(value) -> str:
+    if isinstance(value, list):
+        return ", ".join(str(item) for item in value) if value else "-"
+    if isinstance(value, bool):
+        return "Si" if value else "No"
+    if value in (None, ""):
+        return "-"
+    return str(value)
