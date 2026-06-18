@@ -243,6 +243,7 @@ DATABASE_URL=${{Postgres.DATABASE_URL}}
 SECRET_KEY=replace-with-a-long-random-secret
 FLASK_APP=run.py
 FLASK_ENV=production
+MAX_CONTENT_LENGTH=10485760
 ```
 
 If the PostgreSQL service has another name, replace `Postgres` in the `DATABASE_URL` reference.
@@ -256,3 +257,14 @@ gunicorn run:app --bind 0.0.0.0:$PORT
 ```
 
 If Railway is configured from the repository root instead, the root-level [railway.json](railway.json), [requirements.txt](requirements.txt), and [Procfile](Procfile) point Railpack to the backend app.
+
+## Error Handling
+
+The app includes controlled pages for:
+
+- `403` access denied;
+- `404` not found;
+- `413` upload too large;
+- `500` internal error.
+
+Imports accept only `.xlsx` and `.csv`, reject empty files, apply `MAX_CONTENT_LENGTH`, and show controlled messages for invalid formats.

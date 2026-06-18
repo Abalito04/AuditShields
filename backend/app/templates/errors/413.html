@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Archivo demasiado grande | AuditShields{% endblock %}
+
+{% block content %}
+  <section class="card border-0 shadow-sm">
+    <div class="card-body">
+      <p class="text-uppercase text-secondary small fw-semibold mb-2">Error 413</p>
+      <h1 class="h3">Archivo demasiado grande</h1>
+      <p class="text-secondary mb-4">El archivo supera el tamano maximo permitido para importaciones.</p>
+      <a class="btn btn-primary" href="{{ url_for('imports.new') }}">Volver a importaciones</a>
+    </div>
+  </section>
+{% endblock %}

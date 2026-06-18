@@ -20,6 +20,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER", str(PROJECT_ROOT / "data" / "imports"))
     EXPORT_FOLDER = os.getenv("EXPORT_FOLDER", str(PROJECT_ROOT / "data" / "exports"))
+    MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH", 10 * 1024 * 1024))
 
 
 class DevelopmentConfig(Config):

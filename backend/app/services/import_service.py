@@ -110,9 +110,12 @@ def import_file(entity_type: str, file_path: str | Path, original_filename: str)
 
 
 def _read_dataframe(path: Path):
-    if path.suffix.lower() == ".csv":
-        return pd.read_csv(path)
-    return pd.read_excel(path)
+    try:
+        if path.suffix.lower() == ".csv":
+            return pd.read_csv(path)
+        return pd.read_excel(path)
+    except Exception as exc:
+        raise ValueError("No se pudo leer el archivo. Verifica que sea un Excel o CSV valido.") from exc
 
 
 def _clean_row(row: dict) -> dict:

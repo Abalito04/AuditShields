@@ -64,9 +64,22 @@ def upload():
         flash("Solo se permiten archivos .xlsx o .csv.", "danger")
         return redirect(url_for("imports.new"))
 
+    uploaded_file.seek(0, 2)
+    file_size = uploaded_file.tell()
+    uploaded_file.seek(0)
+    if file_size == 0:
+        flash("El archivo esta vacio.", "danger")
+        return redirect(url_for("imports.new"))
+    if file_size > current_app.config["MAX_CONTENT_LENGTH"]:
+        flash("El archivo supera el tamano maximo permitido.", "danger")
+        return redirect(url_for("imports.new"))
+
     upload_dir = Path(current_app.config["UPLOAD_FOLDER"])
     upload_dir.mkdir(parents=True, exist_ok=True)
     safe_name = secure_filename(uploaded_file.filename)
+    if not safe_name:
+        flash("El nombre del archivo no es valido.", "danger")
+        return redirect(url_for("imports.new"))
     file_path = upload_dir / safe_name
     uploaded_file.save(file_path)
 
@@ -74,6 +87,10 @@ def upload():
         result = import_file(entity_type, file_path, uploaded_file.filename)
     except ValueError as exc:
         flash(str(exc), "danger")
+        return redirect(url_for("imports.new"))
+    except Exception:
+        current_app.logger.exception("Unexpected import error for %s", uploaded_file.filename)
+        flash("No se pudo procesar el archivo. Revisa el formato y las columnas.", "danger")
         return redirect(url_for("imports.new"))
 
     if result.errors:
