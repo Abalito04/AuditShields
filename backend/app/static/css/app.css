@@ -1,9 +1,9 @@
 :root {
-  --as-bg: #f3f8fc;
+  --as-bg: #eaf4fb;
   --as-ink: #0b2239;
   --as-muted: #5d748a;
   --as-line: #d8e8f4;
-  --as-surface: #ffffff;
+  --as-surface: #fbfdff;
   --as-navy: #0b2f57;
   --as-navy-2: #124b7f;
   --as-blue: #2563eb;
@@ -18,13 +18,14 @@ html {
 }
 
 body {
-  background: var(--as-bg);
+  background:
+    linear-gradient(180deg, #e5f2fb 0%, var(--as-bg) 38%, #f2f8fc 100%);
   color: var(--as-ink);
   letter-spacing: 0;
 }
 
 a {
-  color: var(--as-blue);
+  color: var(--as-navy-2);
 }
 
 .app-shell {
@@ -62,10 +63,13 @@ a {
 
 .content-panel {
   min-width: 0;
+  background:
+    radial-gradient(circle at top right, rgba(56, 189, 248, .15), transparent 28rem),
+    linear-gradient(180deg, #edf7fd 0%, #eaf4fb 100%);
 }
 
 .topbar {
-  background: rgba(255, 255, 255, .94);
+  background: rgba(251, 253, 255, .94);
   border-bottom: 1px solid var(--as-line);
   backdrop-filter: blur(14px);
 }
@@ -76,7 +80,8 @@ a {
 
 .card.border-0.shadow-sm {
   box-shadow: var(--as-shadow) !important;
-  border: 1px solid rgba(220, 229, 232, .7) !important;
+  border: 1px solid rgba(202, 224, 238, .86) !important;
+  background: var(--as-surface);
 }
 
 .card-header,
@@ -90,28 +95,47 @@ a {
 }
 
 .btn-primary {
-  background: var(--as-blue);
-  border-color: var(--as-blue);
+  background: var(--as-navy);
+  border-color: var(--as-navy);
+  color: #ffffff;
 }
 
 .btn-primary:hover {
-  background: #1d4ed8;
-  border-color: #1d4ed8;
+  background: #082344;
+  border-color: #082344;
+  color: #ffffff;
+}
+
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary:first-child:active {
+  background: #082344;
+  border-color: #082344;
+  box-shadow: 0 0 0 .2rem rgba(11, 47, 87, .18);
+  color: #ffffff;
 }
 
 .btn-outline-primary {
-  color: var(--as-blue);
-  border-color: var(--as-blue);
+  color: var(--as-navy);
+  border-color: var(--as-navy);
 }
 
 .btn-outline-primary:hover {
-  background: var(--as-blue);
-  border-color: var(--as-blue);
+  background: var(--as-navy);
+  border-color: var(--as-navy);
+  color: #ffffff;
 }
 
 .btn-outline-secondary {
   color: var(--as-navy);
-  border-color: #b7d3e8;
+  border-color: #8db8d6;
+  background: rgba(255, 255, 255, .55);
+}
+
+.btn-outline-secondary:hover {
+  color: #ffffff;
+  background: var(--as-navy-2);
+  border-color: var(--as-navy-2);
 }
 
 .table {
@@ -132,8 +156,8 @@ a {
 
 .form-control:focus,
 .form-select:focus {
-  border-color: var(--as-blue);
-  box-shadow: 0 0 0 .2rem rgba(37, 99, 235, .14);
+  border-color: var(--as-navy-2);
+  box-shadow: 0 0 0 .2rem rgba(11, 47, 87, .15);
 }
 
 .alert {
@@ -146,16 +170,21 @@ a {
   color: var(--as-navy);
 }
 
+.login-info .display-6 {
+  color: #ffffff;
+}
+
 .public-main {
   min-height: 100vh;
+  background: var(--as-bg);
 }
 
 .landing-page {
-  background: #ffffff;
+  background: #f5fbff;
 }
 
 .landing-nav {
-  background: rgba(255, 255, 255, .92);
+  background: rgba(248, 252, 255, .92);
   border-bottom: 1px solid var(--as-line);
   backdrop-filter: blur(12px);
 }
@@ -171,14 +200,35 @@ a {
   font-weight: 800;
 }
 
+.brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-size: 1.12rem;
+  font-weight: 750;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+.brand-icon-on-dark {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .18);
+}
+
 .landing-hero {
   min-height: calc(100vh - 76px);
   display: flex;
   align-items: center;
   padding: 78px 0 44px;
   background:
-    linear-gradient(135deg, rgba(224, 242, 254, .96), rgba(255, 255, 255, .76) 44%, rgba(243, 248, 252, .98)),
-    #ffffff;
+    linear-gradient(135deg, rgba(203, 235, 255, .98), rgba(239, 248, 255, .84) 44%, rgba(226, 241, 251, .98)),
+    #eaf4fb;
 }
 
 .landing-title {
@@ -210,7 +260,7 @@ a {
 .product-preview {
   border: 1px solid rgba(20, 75, 127, .14);
   border-radius: 16px;
-  background: #ffffff;
+  background: #fbfdff;
   box-shadow: 0 30px 80px rgba(20, 75, 127, .18);
   overflow: hidden;
 }
@@ -263,7 +313,7 @@ a {
   border: 1px solid var(--as-line);
   border-radius: 8px;
   padding: 14px;
-  background: #fbfdff;
+  background: #f6fbff;
 }
 
 .preview-table-row {
@@ -303,7 +353,7 @@ a {
 }
 
 .login-shell {
-  background: #ffffff;
+  background: #fbfdff;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 30px 90px rgba(0, 0, 0, .24);

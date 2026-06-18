@@ -9,6 +9,7 @@
       rel="stylesheet"
       crossorigin="anonymous"
     >
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/auditshields-logo.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   </head>
   <body>
@@ -32,7 +33,10 @@
       <div class="app-shell d-lg-flex">
         <aside class="sidebar p-3">
           <div class="mb-4">
-            <a class="d-block fs-5 fw-semibold text-white" href="{{ url_for('dashboard.index') }}">AuditShields</a>
+            <a class="brand-link text-white" href="{{ url_for('dashboard.index') }}">
+              <img class="brand-icon" src="{{ url_for('static', filename='img/auditshields-logo.svg') }}" alt="" aria-hidden="true">
+              <span>AuditShields</span>
+            </a>
             <div class="small text-white-50">Control antifraude PyME</div>
           </div>
 
