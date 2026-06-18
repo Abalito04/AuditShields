@@ -268,3 +268,14 @@ The app includes controlled pages for:
 - `500` internal error.
 
 Imports accept only `.xlsx` and `.csv`, reject empty files, apply `MAX_CONTENT_LENGTH`, and show controlled messages for invalid formats.
+
+## Tests
+
+Run the basic test suite from `backend/`:
+
+```bash
+cd backend
+pytest
+```
+
+The tests use SQLite in memory and cover app creation, login, readonly permissions, supplier creation, invalid imports, duplicate-payment alert generation, automatic case creation and case status history.
