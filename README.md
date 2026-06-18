@@ -1,8 +1,8 @@
 # AuditShields
 
-AuditShields is a web platform for continuous audit and antifraud controls in small and medium-sized businesses. The MVP focuses on purchases, suppliers, payments, stock, and inventory using clear, traceable, explainable rules.
+AuditShields es una plataforma web de auditoria continua y control antifraude para PyMEs. El MVP se enfoca en compras, proveedores, pagos, stock e inventario usando reglas claras, trazables y explicables.
 
-The system is intended to help owners, managers, and auditors answer where money may be leaking, which controls are failing, and which cases need correction, normalization, or closure. It does not automatically accuse people; it detects risk signals and supports an auditable review process.
+El objetivo no es acusar personas automaticamente. El sistema detecta senales de riesgo, genera alertas, crea casos de auditoria y permite gestionarlos hasta su correccion, normalizacion o cierre.
 
 ## Stack
 
@@ -13,150 +13,91 @@ The system is intended to help owners, managers, and auditors answer where money
 - SQLAlchemy
 - Flask-Migrate / Alembic
 - Flask-Login
-- Bootstrap or simple CSS
-- Pandas and openpyxl
+- Bootstrap
+- Pandas y openpyxl
 - pytest
-- Docker Compose for PostgreSQL and auxiliary services
+- Gunicorn para deploy
 
-The MVP intentionally excludes React, machine learning, OCR, external ERP integrations, mobile apps, real multi-tenancy, and PDF reports.
+El MVP excluye React, machine learning, OCR, integraciones ERP, app movil, multi-tenant real y reportes PDF.
 
-## Project Structure
+## Funcionalidades del MVP
+
+- Login con roles `admin`, `auditor` y `readonly`.
+- CRUD de proveedores, ordenes, facturas, pagos, productos, stock y movimientos.
+- Plantillas Excel descargables.
+- Importacion Excel/CSV con validaciones.
+- Datos demo y CSVs de ejemplo.
+- Motor antifraude con reglas R001-R010 y S001-S008.
+- Alertas explicables con evidencia JSON y score.
+- Creacion automatica de casos por alerta.
+- Gestion de casos con estados, comentarios, asignacion e historial.
+- Dashboard con metricas reales.
+- Reportes Excel de alertas, casos y resumen de riesgo.
+- Tests basicos del flujo critico.
+
+## Estructura
 
 ```text
 AuditShields/
-├── backend/
-│   ├── app/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── templates/
-│   │   ├── static/
-│   │   └── utils/
-│   ├── migrations/
-│   ├── tests/
-│   ├── seed/
-│   ├── requirements.txt
-│   ├── run.py
-│   └── .env.example
-├── data/
-│   ├── samples/
-│   ├── templates/
-│   ├── imports/
-│   └── exports/
-├── docs/
-├── scripts/
-├── docker-compose.yml
-├── AGENTS.md
-├── ROADMAP.md
-├── PROMPTS_CODEX.md
-└── README.md
+  backend/
+    app/
+      models/
+      routes/
+      services/
+      templates/
+      utils/
+    migrations/
+    seed/
+    tests/
+    requirements.txt
+    run.py
+  data/
+    samples/
+    templates/
+    imports/
+    exports/
+  docs/
+  docker-compose.yml
+  AGENTS.md
+  ROADMAP.md
+  PROMPTS_CODEX.md
+  README.md
 ```
 
-## Initial Commands
+## Inicio rapido local
 
-Start PostgreSQL:
-
-```bash
-docker compose up -d
-```
-
-Create and activate a virtual environment from `backend/`:
+Desde Git Bash:
 
 ```bash
-cd backend
-python -m venv .venv
-.venv\Scripts\activate
+cd ~/OneDrive/Escritorio/AuditShields/backend
+source .venv/Scripts/activate
 pip install -r requirements.txt
-```
-
-Copy the example environment file and adjust values if needed:
-
-```bash
 copy .env.example .env
-```
-
-Future phases will add migrations, domain models, authentication, imports, antifraud rules, alerts, audit cases, and Excel reports.
-
-## Run Flask Locally
-
-From `backend/`, with the virtual environment active:
-
-```bash
+flask db upgrade
+python seed/seed_users.py
 flask run
 ```
 
-Or:
-
-```bash
-python run.py
-```
-
-The initial dashboard is available at:
-
-```text
-http://127.0.0.1:5000/
-```
-
-## Database Migrations
-
-With `DATABASE_URL` pointing to PostgreSQL and the virtual environment active:
-
-```bash
-cd backend
-flask db upgrade
-```
-
-The initial migration creates the base security, purchasing, inventory, antifraud, alert, case, import, and audit log tables.
-
-## Importaciones y plantillas
-
-Con la app corriendo, desde la seccion `Importaciones` se pueden descargar plantillas Excel y subir archivos `.xlsx` o `.csv`.
-
-Rutas utiles:
-
-```text
-/imports
-/imports/new
-/templates/suppliers/download
-/templates/purchase_orders/download
-/templates/invoices/download
-/templates/payments/download
-/templates/products/download
-/templates/inventory_snapshots/download
-/templates/stock_movements/download
-```
-
-La importacion valida columnas obligatorias, tipos basicos, montos, fechas y relaciones por codigos externos como `supplier_code`, `po_number`, `invoice_number` y `sku`. Las filas invalidas se rechazan y quedan registradas en el detalle de la importacion.
-
-## Initial Admin User
-
-After running migrations, create the initial admin user:
-
-```bash
-cd backend
-python seed/seed_users.py
-```
-
-Development credentials:
+Usuario inicial:
 
 ```text
 Email: admin@auditshields.local
 Password: admin123
-Role: admin
 ```
 
-## Demo Data
+## Datos demo
 
-To load realistic demo data for the antifraud rules:
+Opcion por comando:
 
 ```bash
 cd backend
 python seed/seed_demo_data.py
 ```
 
-The script recreates only records with demo prefixes such as `DEMO-PROV-` and `DEMO-SKU-`. It includes normal records and suspicious scenarios: incomplete suppliers, shared bank accounts, duplicate invoices, duplicate payments, payments without invoice, high payments to a new supplier, stock differences, repeated adjustments, negative stock and movements outside business hours.
+Opcion desde UI:
 
-CSV samples for testing imports are available in `data/samples`. Import them from `/imports/new` in this order:
+1. Entrar a `/imports/new`.
+2. Importar los CSV de `data/samples` en este orden:
 
 ```text
 01_suppliers_demo.csv
@@ -168,59 +109,16 @@ CSV samples for testing imports are available in `data/samples`. Import them fro
 06_inventory_snapshots_demo.csv
 ```
 
-## Run Antifraud Audit
+## Flujo principal
 
-From the dashboard, use `Ejecutar auditoria` to run the fraud engine. The base engine creates the default rule catalog, executes active rule functions, persists new alerts, ignores duplicated fingerprints and creates one audit case per alert.
+1. Iniciar sesion.
+2. Cargar datos manualmente o importar Excel/CSV.
+3. Ejecutar auditoria desde el dashboard.
+4. Revisar alertas en `/alerts`.
+5. Gestionar casos en `/cases`.
+6. Exportar reportes en `/reports`.
 
-Implemented purchase and supplier rules:
-
-- R001 duplicate payments.
-- R002 duplicate invoices.
-- R003 suppliers sharing bank account.
-- R004 new supplier with high payments.
-- R005 payment or invoice without purchase order traceability.
-- R006 split purchases below approval limit.
-- R007 approver equal to requester.
-- R008 excessive supplier concentration.
-- R009 payment outside business hours.
-- R010 incomplete supplier data.
-
-Implemented inventory rules:
-
-- S001 repeated manual adjustments.
-- S002 negative stock.
-- S003 inventory difference above threshold.
-- S004 movement outside business hours.
-- S005 excessive shrinkage.
-- S006 unreconciled transfer.
-- S007 operator with too many adjustments.
-- S008 active product without recent movement.
-
-Audit results are visible from:
-
-```text
-/alerts
-/cases
-```
-
-Each alert has an explanatory detail page with rule, score, risk level and evidence JSON. Each alert creates an audit case that can be assigned, commented, moved through statuses and reviewed through its history.
-
-## Dashboard and Reports
-
-The dashboard shows real metrics from the database:
-
-- active alerts;
-- open cases;
-- critical cases;
-- amount at risk;
-- observed suppliers;
-- observed products;
-- latest cases;
-- top triggered rules;
-- cases by status;
-- alerts by module.
-
-Excel reports are available from `/reports`:
+## Reportes
 
 ```text
 /reports/cases.xlsx
@@ -228,15 +126,24 @@ Excel reports are available from `/reports`:
 /reports/risk-summary.xlsx
 ```
 
-## Railway Deploy
+## Tests
 
-Recommended Railway service root directory:
-
-```text
-backend
+```bash
+cd backend
+pytest
 ```
 
-Add these variables to the Flask app service:
+Estado actual: `9 passed`.
+
+## Deploy en Railway
+
+Configuracion recomendada:
+
+- Root directory del servicio: `backend`
+- Railway config file: `/backend/railway.json`
+- Start command: definido en `railway.json`
+
+Variables:
 
 ```env
 DATABASE_URL=${{Postgres.DATABASE_URL}}
@@ -246,36 +153,17 @@ FLASK_ENV=production
 MAX_CONTENT_LENGTH=10485760
 ```
 
-If the PostgreSQL service has another name, replace `Postgres` in the `DATABASE_URL` reference.
-
-The project pins Python 3.12 with `.python-version` so Railway installs wheels for dependencies such as pandas instead of trying to compile them from source.
-
-Railway uses [backend/railway.json](backend/railway.json) to start the app with Gunicorn:
+Luego ejecutar en Railway, si hace falta:
 
 ```bash
-gunicorn run:app --bind 0.0.0.0:$PORT
+flask db upgrade
+python seed/seed_users.py
 ```
 
-If Railway is configured from the repository root instead, the root-level [railway.json](railway.json), [requirements.txt](requirements.txt), and [Procfile](Procfile) point Railpack to the backend app.
+## Documentacion
 
-## Error Handling
-
-The app includes controlled pages for:
-
-- `403` access denied;
-- `404` not found;
-- `413` upload too large;
-- `500` internal error.
-
-Imports accept only `.xlsx` and `.csv`, reject empty files, apply `MAX_CONTENT_LENGTH`, and show controlled messages for invalid formats.
-
-## Tests
-
-Run the basic test suite from `backend/`:
-
-```bash
-cd backend
-pytest
-```
-
-The tests use SQLite in memory and cover app creation, login, readonly permissions, supplier creation, invalid imports, duplicate-payment alert generation, automatic case creation and case status history.
+- [Instalacion](docs/INSTALLATION.md)
+- [Guia de usuario](docs/USER_GUIDE.md)
+- [Base de datos](docs/DATABASE.md)
+- [Reglas antifraude](docs/RULES.md)
+- [Guion de demo](docs/DEMO_SCRIPT.md)
