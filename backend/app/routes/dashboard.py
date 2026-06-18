@@ -9,7 +9,6 @@ from app.utils.labels import CASE_STATUS_LABELS, MODULE_LABELS, RISK_LEVEL_LABEL
 dashboard_bp = Blueprint("dashboard", __name__)
 
 
-@dashboard_bp.get("/")
 @dashboard_bp.get("/dashboard")
 @login_required
 def index():

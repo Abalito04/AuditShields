@@ -178,3 +178,5 @@ python seed/seed_users.py
 - [Base de datos](docs/DATABASE.md)
 - [Reglas antifraude](docs/RULES.md)
 - [Guion de demo](docs/DEMO_SCRIPT.md)
+- [Kit de presentacion](docs/SHOWCASE.md)
+- [Caso de portfolio](docs/PORTFOLIO_CASE_STUDY.md)

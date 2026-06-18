@@ -14,6 +14,7 @@ from app.routes.dashboard import dashboard_bp
 from app.routes.demo import demo_bp
 from app.routes.imports import imports_bp
 from app.routes.inventory import inventory_bp
+from app.routes.landing import landing_bp
 from app.routes.purchases import purchases_bp
 from app.routes.reports import reports_bp
 from app.routes.suppliers import suppliers_bp
@@ -54,6 +55,7 @@ def register_template_filters(app: Flask) -> None:
 
 def register_blueprints(app: Flask) -> None:
     app.register_blueprint(auth_bp)
+    app.register_blueprint(landing_bp)
     app.register_blueprint(audit_bp)
     app.register_blueprint(demo_bp)
     app.register_blueprint(dashboard_bp)

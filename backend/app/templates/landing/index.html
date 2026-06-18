@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}AuditShields | Auditoria continua para PyMEs{% endblock %}
+{% block public_main_class %}public-main{% endblock %}
+
+{% block content %}
+  <div class="landing-page">
+    <header class="landing-nav sticky-top">
+      <div class="container py-3 d-flex align-items-center justify-content-between">
+        <a class="d-flex align-items-center gap-2 text-decoration-none text-dark fw-bold" href="{{ url_for('landing.index') }}">
+          <span class="brand-mark">A</span>
+          <span>AuditShields</span>
+        </a>
+        <nav class="d-none d-md-flex align-items-center gap-4 small fw-semibold">
+          <a class="text-decoration-none text-secondary" href="#flujo">Flujo</a>
+          <a class="text-decoration-none text-secondary" href="#reglas">Reglas</a>
+          <a class="text-decoration-none text-secondary" href="#reportes">Reportes</a>
+        </nav>
+        <a class="btn btn-primary" href="{{ url_for('auth.login_form') }}">Ingresar</a>
+      </div>
+    </header>
+
+    <section class="landing-hero">
+      <div class="container">
+        <div class="row g-5 align-items-center">
+          <div class="col-lg-6">
+            <h1 class="landing-title mb-4">Auditoria continua para detectar riesgos antes de que cuesten dinero</h1>
+            <p class="landing-copy mb-4">
+              AuditShields transforma datos de compras, pagos, proveedores e inventario en alertas explicables y casos gestionables para PyMEs.
+            </p>
+            <div class="d-flex flex-wrap gap-3 mb-5">
+              <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login_form') }}">Ver demo</a>
+              <a class="btn btn-outline-secondary btn-lg" href="#flujo">Conocer el flujo</a>
+            </div>
+            <div class="landing-proof">
+              <div class="proof-item">
+                <div class="fw-bold">Reglas claras</div>
+                <div class="text-secondary small">Sin caja negra ni ML en el MVP.</div>
+              </div>
+              <div class="proof-item">
+                <div class="fw-bold">Casos auditables</div>
+                <div class="text-secondary small">Estado, historial y comentarios.</div>
+              </div>
+              <div class="proof-item">
+                <div class="fw-bold">Reportes Excel</div>
+                <div class="text-secondary small">Resumen para direccion.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="product-preview">
+              <div class="preview-topbar">
+                <span class="preview-dot"></span>
+                <span class="preview-dot"></span>
+                <span class="preview-dot"></span>
+              </div>
+              <div class="preview-body">
+                <div class="preview-sidebar">
+                  <div class="preview-line w-75"></div>
+                  <div class="preview-line"></div>
+                  <div class="preview-line w-50"></div>
+                  <div class="preview-line w-75 mt-5"></div>
+                  <div class="preview-line"></div>
+                  <div class="preview-line w-50"></div>
+                </div>
+                <div class="preview-content">
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                      <div class="text-secondary small">Dashboard</div>
+                      <div class="h5 mb-0">Riesgo operativo</div>
+                    </div>
+                    <span class="badge text-bg-success">Auditoria lista</span>
+                  </div>
+                  <div class="preview-metrics">
+                    <div class="preview-metric">
+                      <div class="text-secondary small">Alertas activas</div>
+                      <div class="h3 mb-0">21</div>
+                    </div>
+                    <div class="preview-metric">
+                      <div class="text-secondary small">Monto en riesgo</div>
+                      <div class="h3 mb-0">10.374.600,00</div>
+                    </div>
+                  </div>
+                  <div class="preview-table-row fw-semibold text-secondary">
+                    <span>Regla</span><span>Alerta</span><span>Riesgo</span>
+                  </div>
+                  <div class="preview-table-row">
+                    <span>R001</span><span>Pago duplicado</span><span>Critico</span>
+                  </div>
+                  <div class="preview-table-row">
+                    <span>R003</span><span>Cuenta bancaria compartida</span><span>Alto</span>
+                  </div>
+                  <div class="preview-table-row">
+                    <span>S007</span><span>Operador con ajustes repetidos</span><span>Alto</span>
+                  </div>
+                  <div class="preview-table-row">
+                    <span>S003</span><span>Diferencia de inventario</span><span>Medio</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-section" id="flujo">
+      <div class="container">
+        <div class="row g-5 align-items-start">
+          <div class="col-lg-5">
+            <h2 class="section-title">De planillas dispersas a casos accionables</h2>
+          </div>
+          <div class="col-lg-7">
+            {% for title, text in [
+              ('Cargar', 'Datos manuales o importacion Excel/CSV con validaciones por fila.'),
+              ('Detectar', 'Reglas antifraude explicables sobre compras, pagos, proveedores y stock.'),
+              ('Gestionar', 'Cada alerta crea un caso con responsable, comentarios, estado e historial.'),
+              ('Reportar', 'Dashboard ejecutivo y exportaciones Excel para seguimiento.')
+            ] %}
+              <div class="feature-row">
+                <div class="row">
+                  <div class="col-md-4 fw-bold">{{ title }}</div>
+                  <div class="col-md-8 text-secondary">{{ text }}</div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-section bg-light" id="reglas">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-5">
+            <h2 class="section-title">Alertas que explican el motivo, no solo el resultado</h2>
+          </div>
+          <div class="col-lg-7">
+            <div class="row g-3">
+              {% for item in ['Pagos duplicados', 'Facturas repetidas', 'Proveedores incompletos', 'Compras fraccionadas', 'Stock negativo', 'Ajustes repetidos'] %}
+                <div class="col-md-6">
+                  <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body">
+                      <div class="fw-semibold">{{ item }}</div>
+                      <div class="text-secondary small mt-2">Senal de riesgo con evidencia estructurada y caso asociado.</div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-section" id="reportes">
+      <div class="container">
+        <div class="row g-5 align-items-center">
+          <div class="col-lg-6">
+            <h2 class="section-title">Listo para mostrar al jefe, auditor o socio</h2>
+            <p class="landing-copy">
+              El MVP incluye dashboard, casos gestionables y reportes Excel para convertir hallazgos en seguimiento concreto.
+            </p>
+          </div>
+          <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                <div class="d-flex justify-content-between border-bottom py-3">
+                  <span>Casos abiertos</span><strong>12</strong>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-3">
+                  <span>Alertas criticas</span><strong>4</strong>
+                </div>
+                <div class="d-flex justify-content-between border-bottom py-3">
+                  <span>Proveedores observados</span><strong>5</strong>
+                </div>
+                <div class="d-flex justify-content-between py-3">
+                  <span>Reportes disponibles</span><strong>3</strong>
+                </div>
+                <a class="btn btn-primary w-100 mt-3" href="{{ url_for('auth.login_form') }}">Ingresar a la demo</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}

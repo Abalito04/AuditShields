@@ -1,43 +1,90 @@
 {% extends "base.html" %}
 
-{% block title %}Login | AuditShields{% endblock %}
+{% block title %}Ingresar | AuditShields{% endblock %}
+{% block public_main_class %}public-main p-0{% endblock %}
 
 {% block content %}
-  <div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-          <p class="text-uppercase text-secondary small fw-semibold mb-2">Acceso seguro</p>
-          <h1 class="h4 mb-4">Ingresar a AuditShields</h1>
+  <section class="login-page">
+    <div class="container">
+      <div class="login-shell">
+        <div class="row g-0">
+          <div class="col-lg-6">
+            <div class="login-info p-5">
+              <a class="d-inline-flex align-items-center gap-2 text-decoration-none text-white fw-bold mb-5" href="{{ url_for('landing.index') }}">
+                <span class="brand-mark bg-white text-dark">A</span>
+                <span>AuditShields</span>
+              </a>
+              <h1 class="display-6 fw-bold mb-3">Control antifraude explicable para PyMEs</h1>
+              <p class="fs-5 mb-0">
+                Ingresa para revisar alertas, gestionar casos, preparar la demo y exportar reportes de riesgo.
+              </p>
 
-          <form method="post" action="{{ url_for('auth.login') }}" novalidate>
-            <div class="mb-3">
-              <label class="form-label" for="email">Email</label>
-              <input
-                class="form-control"
-                id="email"
-                name="email"
-                type="email"
-                autocomplete="email"
-                required
-                autofocus
-              >
+              <div class="login-list">
+                <div class="login-list-item">
+                  <div class="fw-semibold">Alertas con evidencia</div>
+                  <p class="small mb-0">Cada regla explica el motivo y crea un caso automaticamente.</p>
+                </div>
+                <div class="login-list-item">
+                  <div class="fw-semibold">Trazabilidad de casos</div>
+                  <p class="small mb-0">Estados, comentarios, responsable e historial de revision.</p>
+                </div>
+                <div class="login-list-item">
+                  <div class="fw-semibold">Demo lista</div>
+                  <p class="small mb-0">Usa Preparar demo para poblar datos, alertas y casos en un clic.</p>
+                </div>
+              </div>
             </div>
-            <div class="mb-4">
-              <label class="form-label" for="password">Contrasena</label>
-              <input
-                class="form-control"
-                id="password"
-                name="password"
-                type="password"
-                autocomplete="current-password"
-                required
-              >
+          </div>
+
+          <div class="col-lg-6">
+            <div class="p-5">
+              <div class="mb-4">
+                <p class="text-uppercase text-secondary small fw-semibold mb-2">Acceso seguro</p>
+                <h2 class="h3 mb-2">Ingresar a la plataforma</h2>
+                <p class="text-secondary mb-0">Usa tus credenciales para continuar al dashboard.</p>
+              </div>
+
+              <form method="post" action="{{ url_for('auth.login') }}" novalidate>
+                <div class="mb-3">
+                  <label class="form-label" for="email">Email</label>
+                  <input
+                    class="form-control form-control-lg"
+                    id="email"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="admin@auditshields.local"
+                    required
+                    autofocus
+                  >
+                </div>
+                <div class="mb-4">
+                  <label class="form-label" for="password">Contrasena</label>
+                  <input
+                    class="form-control form-control-lg"
+                    id="password"
+                    name="password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="admin123"
+                    required
+                  >
+                </div>
+                <button class="btn btn-primary btn-lg w-100" type="submit">Ingresar</button>
+              </form>
+
+              <div class="mt-4 p-3 rounded border bg-light">
+                <div class="small text-secondary">Usuario demo</div>
+                <div class="fw-semibold">admin@auditshields.local / admin123</div>
+              </div>
+
+              <div class="mt-4">
+                <a class="text-secondary small" href="{{ url_for('landing.index') }}">Volver a la landing</a>
+              </div>
             </div>
-            <button class="btn btn-primary w-100" type="submit">Ingresar</button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 {% endblock %}

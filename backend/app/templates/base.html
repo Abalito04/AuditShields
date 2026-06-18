@@ -9,19 +9,7 @@
       rel="stylesheet"
       crossorigin="anonymous"
     >
-    <style>
-      body { background: #f5f7fb; }
-      .app-shell { min-height: 100vh; }
-      .sidebar { width: 280px; background: #111827; color: #e5e7eb; }
-      .sidebar a { color: #cbd5e1; text-decoration: none; }
-      .sidebar a:hover, .sidebar a.active { background: #1f2937; color: #ffffff; }
-      .sidebar-section { color: #94a3b8; font-size: .72rem; letter-spacing: .08em; }
-      .content-panel { min-width: 0; }
-      .topbar { background: #ffffff; border-bottom: 1px solid #e5e7eb; }
-      @media (max-width: 991.98px) {
-        .sidebar { width: 100%; }
-      }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
   </head>
   <body>
     {% set nav_items = [
@@ -45,7 +33,7 @@
         <aside class="sidebar p-3">
           <div class="mb-4">
             <a class="d-block fs-5 fw-semibold text-white" href="{{ url_for('dashboard.index') }}">AuditShields</a>
-            <div class="small text-secondary">Control antifraude PyME</div>
+            <div class="small text-white-50">Control antifraude PyME</div>
           </div>
 
           <nav class="d-grid gap-1">
@@ -71,7 +59,7 @@
           <header class="topbar px-4 py-3 d-flex align-items-center justify-content-between">
             <div>
               <div class="small text-secondary">Sesion activa</div>
-              <div class="fw-semibold">{{ current_user.name }} · {{ current_user.role }}</div>
+              <div class="fw-semibold">{{ current_user.name }} - {{ current_user.role }}</div>
             </div>
             <form method="post" action="{{ url_for('auth.logout') }}">
               <button class="btn btn-outline-secondary btn-sm" type="submit">Cerrar sesion</button>
@@ -79,7 +67,7 @@
           </header>
           <main class="p-4">
     {% else %}
-      <main class="container py-5">
+      <main class="{% block public_main_class %}container py-5{% endblock %}">
     {% endif %}
 
     {% with messages = get_flashed_messages(with_categories=true) %}
