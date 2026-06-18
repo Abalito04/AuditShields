@@ -118,6 +118,8 @@ Opcion desde UI:
 5. Gestionar casos en `/cases`.
 6. Exportar reportes en `/reports`.
 
+Para una demo rapida, usar `Preparar demo` en el dashboard. Esa accion recrea datos `DEMO-*`, ejecuta auditoria y deja alertas/casos listos para presentar.
+
 ## Reportes
 
 ```text

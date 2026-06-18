@@ -33,6 +33,14 @@ Mostrar:
 - reglas mas activadas;
 - ultimos casos.
 
+Si la base necesita prepararse para la presentacion, presionar:
+
+```text
+Preparar demo
+```
+
+Esta accion recrea datos con prefijo `DEMO-*`, ejecuta auditoria y deja alertas/casos listos para mostrar. No elimina datos importados con prefijo `CSV-*`.
+
 ## 3. Mostrar carga de datos
 
 Abrir:

@@ -5,9 +5,20 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 
-from app import create_app
 from app.extensions import db
-from app.models import InventorySnapshot, Invoice, Payment, Product, PurchaseOrder, StockMovement, Supplier
+from app.models import (
+    Alert,
+    Case,
+    CaseComment,
+    CaseHistory,
+    InventorySnapshot,
+    Invoice,
+    Payment,
+    Product,
+    PurchaseOrder,
+    StockMovement,
+    Supplier,
+)
 
 
 DEMO_SUPPLIERS = [
@@ -78,11 +89,17 @@ DEMO_PRODUCTS = [
 def reset_demo_data() -> None:
     supplier_ids = [supplier.id for supplier in Supplier.query.filter(Supplier.supplier_code.like("DEMO-%")).all()]
     product_ids = [product.id for product in Product.query.filter(Product.sku.like("DEMO-%")).all()]
+    alert_ids = []
 
     if supplier_ids:
         payment_ids = [payment.id for payment in Payment.query.filter(Payment.supplier_id.in_(supplier_ids)).all()]
         invoice_ids = [invoice.id for invoice in Invoice.query.filter(Invoice.supplier_id.in_(supplier_ids)).all()]
         order_ids = [order.id for order in PurchaseOrder.query.filter(PurchaseOrder.supplier_id.in_(supplier_ids)).all()]
+        alert_ids.extend(_alert_ids_for_demo_entities("supplier", supplier_ids))
+        alert_ids.extend(_alert_ids_for_demo_entities("payment", payment_ids))
+        alert_ids.extend(_alert_ids_for_demo_entities("invoice", invoice_ids))
+        alert_ids.extend(_alert_ids_for_demo_entities("purchase_order", order_ids))
+        _delete_alerts_and_cases(alert_ids)
         if payment_ids:
             Payment.query.filter(Payment.id.in_(payment_ids)).delete(synchronize_session=False)
         if invoice_ids:
@@ -92,11 +109,43 @@ def reset_demo_data() -> None:
         Supplier.query.filter(Supplier.id.in_(supplier_ids)).delete(synchronize_session=False)
 
     if product_ids:
-        StockMovement.query.filter(StockMovement.product_id.in_(product_ids)).delete(synchronize_session=False)
-        InventorySnapshot.query.filter(InventorySnapshot.product_id.in_(product_ids)).delete(synchronize_session=False)
+        movement_ids = [movement.id for movement in StockMovement.query.filter(StockMovement.product_id.in_(product_ids)).all()]
+        snapshot_ids = [snapshot.id for snapshot in InventorySnapshot.query.filter(InventorySnapshot.product_id.in_(product_ids)).all()]
+        alert_ids = []
+        alert_ids.extend(_alert_ids_for_demo_entities("product", product_ids))
+        alert_ids.extend(_alert_ids_for_demo_entities("stock_movement", movement_ids))
+        alert_ids.extend(_alert_ids_for_demo_entities("inventory_snapshot", snapshot_ids))
+        _delete_alerts_and_cases(alert_ids)
+        if movement_ids:
+            StockMovement.query.filter(StockMovement.id.in_(movement_ids)).delete(synchronize_session=False)
+        if snapshot_ids:
+            InventorySnapshot.query.filter(InventorySnapshot.id.in_(snapshot_ids)).delete(synchronize_session=False)
         Product.query.filter(Product.id.in_(product_ids)).delete(synchronize_session=False)
 
     db.session.commit()
+
+
+def _alert_ids_for_demo_entities(entity_type: str, entity_ids: list[int]) -> list[int]:
+    if not entity_ids:
+        return []
+    return [
+        alert.id
+        for alert in Alert.query.filter(
+            Alert.entity_type == entity_type,
+            Alert.entity_id.in_(entity_ids),
+        ).all()
+    ]
+
+
+def _delete_alerts_and_cases(alert_ids: list[int]) -> None:
+    if not alert_ids:
+        return
+    case_ids = [case.id for case in Case.query.filter(Case.alert_id.in_(alert_ids)).all()]
+    if case_ids:
+        CaseComment.query.filter(CaseComment.case_id.in_(case_ids)).delete(synchronize_session=False)
+        CaseHistory.query.filter(CaseHistory.case_id.in_(case_ids)).delete(synchronize_session=False)
+        Case.query.filter(Case.id.in_(case_ids)).delete(synchronize_session=False)
+    Alert.query.filter(Alert.id.in_(alert_ids)).delete(synchronize_session=False)
 
 
 def seed_suppliers() -> dict[str, Supplier]:
@@ -383,6 +432,8 @@ def seed_demo_data() -> None:
 
 
 if __name__ == "__main__":
+    from app import create_app
+
     app = create_app()
     with app.app_context():
         seed_demo_data()

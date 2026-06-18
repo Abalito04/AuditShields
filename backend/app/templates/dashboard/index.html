@@ -9,9 +9,41 @@
       <h1 class="h3 mb-2">Dashboard</h1>
       <p class="text-secondary mb-0">Indicadores reales de alertas, casos y monto en riesgo.</p>
     </div>
-    <form method="post" action="{{ url_for('audit.run') }}">
-      <button class="btn btn-primary" type="submit">Ejecutar auditoria</button>
-    </form>
+    <div class="d-flex gap-2 align-items-center">
+      <form method="post" action="{{ url_for('demo.reset') }}" onsubmit="return confirm('Esto recrea los datos DEMO-* y sus resultados asociados. Continuar?');">
+        <button class="btn btn-outline-secondary" type="submit">Preparar demo</button>
+      </form>
+      <form method="post" action="{{ url_for('audit.run') }}">
+        <button class="btn btn-primary" type="submit">Ejecutar auditoria</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="row g-3 mb-4">
+    <div class="col-md-4">
+      <a class="card border-0 shadow-sm h-100 text-decoration-none text-reset" href="{{ url_for('alerts.index') }}">
+        <div class="card-body">
+          <div class="text-secondary small">Revision</div>
+          <div class="fw-semibold">Ver alertas</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-4">
+      <a class="card border-0 shadow-sm h-100 text-decoration-none text-reset" href="{{ url_for('cases.index') }}">
+        <div class="card-body">
+          <div class="text-secondary small">Gestion</div>
+          <div class="fw-semibold">Revisar casos</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-md-4">
+      <a class="card border-0 shadow-sm h-100 text-decoration-none text-reset" href="{{ url_for('reports.index') }}">
+        <div class="card-body">
+          <div class="text-secondary small">Salida</div>
+          <div class="fw-semibold">Descargar reportes</div>
+        </div>
+      </a>
+    </div>
   </section>
 
   <section class="row g-3 mb-4">
