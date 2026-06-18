@@ -112,6 +112,32 @@ Por UI:
 06_inventory_snapshots_demo.csv
 ```
 
+## Reset completo
+
+Para dejar la base en blanco y conservar solo el usuario admin inicial:
+
+```bash
+cd backend
+python seed/reset_database.py --yes
+```
+
+Este comando borra:
+
+- proveedores, ordenes, facturas y pagos;
+- productos, snapshots y movimientos;
+- importaciones;
+- reglas;
+- alertas;
+- casos, comentarios e historial;
+- logs;
+- usuarios.
+
+Luego recrea:
+
+```text
+admin@auditshields.local / admin123
+```
+
 ## Tests
 
 ```bash

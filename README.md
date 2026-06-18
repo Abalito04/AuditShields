@@ -120,6 +120,15 @@ Opcion desde UI:
 
 Para una demo rapida, usar `Preparar demo` en el dashboard. Esa accion recrea datos `DEMO-*`, ejecuta auditoria y deja alertas/casos listos para presentar.
 
+Para dejar la base completamente limpia y volver a empezar desde cero:
+
+```bash
+cd backend
+python seed/reset_database.py --yes
+```
+
+Ese comando borra datos operativos, importaciones, alertas, casos, reglas, logs y usuarios, y recrea solo el admin inicial.
+
 ## Reportes
 
 ```text
